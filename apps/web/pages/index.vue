@@ -148,7 +148,7 @@
 <script setup>
 import CompactSensorRow from '~/components/CompactSensorRow.vue'
 import MinimalChart from '~/components/MinimalChart.vue'
-import { useLatestReading, useReadingHistory } from '~/composables/useFirebaseData'
+import { useLatestReading, useReadingHistory } from '~/composables/useSupabaseData'
 
 const { reading } = useLatestReading()
 const { history } = useReadingHistory(20)
