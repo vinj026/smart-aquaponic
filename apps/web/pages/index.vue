@@ -88,15 +88,21 @@
         />
       </section>
 
-      <!-- General Info Compact Row -->
-      <section class="grid grid-cols-2 gap-3" aria-label="System details">
-        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex items-center justify-between">
-           <span class="text-[10px] uppercase text-gray-500 font-medium">Crop Age</span>
-           <span class="text-xs font-bold text-gray-800">14 Days</span>
+      <!-- Lifecycle Information Compact Row -->
+      <section class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
+        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex flex-col justify-center gap-0.5">
+           <div class="flex items-center justify-between">
+             <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wide">Crop Age</span>
+             <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-sm">{{ cropLifecycle }}</span>
+           </div>
+           <span class="text-sm font-bold text-gray-800">{{ cropAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
         </div>
-        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex items-center justify-between">
-           <span class="text-[10px] uppercase text-gray-500 font-medium">Fish Age</span>
-           <span class="text-xs font-bold text-gray-800">38 Days</span>
+        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex flex-col justify-center gap-0.5">
+           <div class="flex items-center justify-between">
+             <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wide">Fish Age</span>
+             <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-sm">{{ fishLifecycle }}</span>
+           </div>
+           <span class="text-sm font-bold text-gray-800">{{ fishAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
         </div>
       </section>
 
@@ -185,6 +191,27 @@ const systemHealthLabel = computed(() => {
   return 'Healthy'
 })
 
+// Lifecycle Logic
+// Note: Hardcoding initial values for demonstration, ideally synced from DB
+const cropAge = ref(32)
+const fishAge = ref(38)
+
+const cropLifecycle = computed(() => {
+  const a = cropAge.value
+  if (a < 7) return 'Seedling'
+  if (a < 21) return 'Vegetative'
+  if (a < 30) return 'Maturing'
+  return 'Near Harvest'
+})
+
+const fishLifecycle = computed(() => {
+  const a = fishAge.value
+  if (a < 14) return 'Fry'
+  if (a < 30) return 'Fingerling'
+  if (a < 60) return 'Grow-out'
+  return 'Harvestable'
+})
+
 function statusLabel(status) {
   if (!status) return 'None'
   if (status === 'normal') return 'Normal'
@@ -210,6 +237,14 @@ const insightText = computed(() => {
     return 'Water volume is critically low. Submersible pumps are at risk of running dry.'
   }
   
+  // If sensors are normal, let's look at lifecycle context.
+  if (cropLifecycle.value === 'Near Harvest') {
+    return `Crop has reached the ${cropLifecycle.value} phase. Nutrient uptake will slow down.`
+  }
+  if (cropLifecycle.value === 'Vegetative') {
+    return `Crop is in active ${cropLifecycle.value} growth. Maintaining current normal conditions is ideal.`
+  }
+  
   return 'All aquatic parameters are within optimal ranges for a balanced ecosystem.'
 })
 
@@ -222,7 +257,11 @@ const suggestedAction = computed(() => {
   if (l.turbidity_status !== 'normal') return 'Inspect mechanical filters and reduce fish feeding.'
   if (l.water_level_status !== 'normal') return 'Immediate water replenishment required.'
   
-  return null
+  // Lifecycle suggestions
+  if (cropLifecycle.value === 'Near Harvest') return 'Prepare harvesting tools and monitor final yield quality.'
+  if (fishLifecycle.value === 'Grow-out') return 'Ensure feeding rates support the primary grow-out phase.'
+
+  return 'Continue monitoring routine schedule.'
 })
 
 const overallDotClass = computed(() => {
