@@ -1,9 +1,9 @@
 <template>
   <main class="min-h-screen bg-[#FAFAFA] text-gray-800 font-sans relative overflow-x-hidden">
     <!-- Subtle dot grid background for technical depth -->
-    <div class="fixed inset-0 pointer-events-none opacity-40" style="background-image: radial-gradient(#d1d5db 1px, transparent 1px); background-size: 16px 16px;"></div>
+    <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(#d1d5db 1px, transparent 1px); background-size: 16px 16px;"></div>
     
-    <div class="max-w-md mx-auto relative z-10 px-4 py-6 space-y-4">
+    <div class="max-w-md mx-auto relative z-10 px-4 py-8 space-y-6">
       
       <!-- Compact Header -->
       <header class="flex items-center justify-between bg-white border border-gray-200 px-3 py-2 rounded-md shadow-sm">
@@ -14,11 +14,26 @@
         <div class="text-[10px] text-gray-400 font-medium">Live sync: {{ lastUpdatedText }}</div>
       </header>
       
-      <!-- System Alert Banner (Only shows if warning/danger) -->
-      <div v-if="latest && latest.overall_status !== 'normal'" 
-           class="px-3 py-2 rounded-md border flex items-center gap-2 text-xs font-medium"
+      <!-- System Alert Banner -->
+      <div v-if="latest" 
+           class="px-4 py-3 rounded-md border flex gap-3 shadow-sm transition-all duration-300"
            :class="alertClasses">
-        <span class="truncate">{{ insightText }}</span>
+        <div class="shrink-0 mt-0.5">
+           <svg v-if="latest.overall_status === 'normal'" class="w-4 h-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+           </svg>
+           <svg v-else class="w-4 h-4" :class="latest.overall_status === 'danger' ? 'text-red-500' : 'text-yellow-500'" viewBox="0 0 20 20" fill="currentColor">
+             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+           </svg>
+        </div>
+        <div class="space-y-0.5 min-w-0">
+          <p class="text-[11px] font-bold uppercase tracking-wider leading-none" :class="alertTitleClass">
+             {{ alertTitle }}
+          </p>
+          <p class="text-[12px] font-medium leading-tight opacity-90 truncate">
+             {{ insightText }}
+          </p>
+        </div>
       </div>
 
       <!-- Compact 2-Col Sensor Grid -->
@@ -137,10 +152,24 @@ const overallDotClass = computed(() => {
   return 'bg-emerald-500' // normal layout
 })
 
+const alertTitle = computed(() => {
+  const s = latest.value?.overall_status
+  if (s === 'danger') return 'Critical Alert'
+  if (s === 'warning') return 'System Warning'
+  return 'System Status'
+})
+
+const alertTitleClass = computed(() => {
+  const s = latest.value?.overall_status
+  if (s === 'danger') return 'text-red-700'
+  if (s === 'warning') return 'text-yellow-700'
+  return 'text-emerald-700'
+})
+
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-50 text-red-600 border-red-200'
-  if (s === 'warning') return 'bg-yellow-50 text-yellow-600 border-yellow-200'
-  return 'bg-gray-50 text-gray-500 border-gray-200'
+  if (s === 'danger') return 'bg-red-50 text-red-600 border-red-200 ring-1 ring-red-100'
+  if (s === 'warning') return 'bg-yellow-50 text-yellow-600 border-yellow-200 ring-1 ring-yellow-100'
+  return 'bg-emerald-50 text-emerald-600 border-emerald-100 ring-1 ring-emerald-50/50'
 })
 </script>

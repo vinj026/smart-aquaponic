@@ -18,12 +18,18 @@
       <path :d="fillPath" :fill="`url(#${gradientId})`" />
       <path :d="linePath" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
 
-      <!-- Final pulse dot -->
-      <circle :cx="latestPoint.x" :cy="latestPoint.y" r="3" fill="#10B981" class="animate-pulse" />
+      <!-- Highlighting latest point -->
+      <g>
+        <circle :cx="latestPoint.x" :cy="latestPoint.y" r="6" fill="#10B981" fill-opacity="0.1" />
+        <circle :cx="latestPoint.x" :cy="latestPoint.y" r="3" fill="#10B981" class="animate-pulse" />
+      </g>
+      
+      <!-- Value Label at latest point -->
+      <text :x="latestValueLabelPos.x" :y="latestValueLabelPos.y" dy="-12" text-anchor="middle" class="text-[11px] font-bold fill-emerald-600 font-mono drop-shadow-sm">{{ latestValueFormatted }}</text>
       
       <!-- Min/Max labels -->
-      <text x="0" y="10" class="text-[9px] fill-gray-400 font-mono">{{ maxLabel }}</text>
-      <text x="0" y="148" class="text-[9px] fill-gray-400 font-mono">{{ minLabel }}</text>
+      <text x="0" y="10" class="text-[9px] fill-gray-400 font-mono uppercase tracking-tighter">Peak: {{ maxLabel }}</text>
+      <text x="0" y="148" class="text-[9px] fill-gray-400 font-mono uppercase tracking-tighter">Floor: {{ minLabel }}</text>
     </svg>
   </div>
 </template>
@@ -90,6 +96,19 @@ const fillPath = computed(() => {
 })
 
 const latestPoint = computed(() => points.value[points.value.length - 1] || { x: 0, y: 0 })
+const latestValueFormatted = computed(() => {
+  const val = values.value[values.value.length - 1]
+  return val != null ? formatValue(val) : ''
+})
+
+const latestValueLabelPos = computed(() => {
+  const p = latestPoint.value
+  return {
+    x: Math.min(Math.max(p.x, 20), 280),
+    y: p.y
+  }
+})
+
 const gradientId = computed(() => `mini-chart-grad-${props.parameter}`)
 
 function formatValue(value) {
