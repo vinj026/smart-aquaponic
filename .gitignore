@@ -5,6 +5,13 @@ node_modules/
 .env
 .env.local
 .env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Firebase service account keys (never commit)
+apps/api/serviceAccountKey.json
+apps/api/*firebase-adminsdk*.json
 
 # Build outputs
 dist/
@@ -41,3 +48,8 @@ coverage/
 # Temporary files
 tmp/
 temp/
+
+# Agent internal files
+.agents/
+skills-lock.json
+brain/

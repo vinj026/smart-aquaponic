@@ -1,22 +1,20 @@
-# Smart Aquaponic Dashboard
+# AquaMonitor — Aquaponic IoT Simulation System
 
-A real-time IoT aquaponic monitoring system with a data-driven dashboard, rule engine, and control system — runnable entirely without hardware via a simulator.
+Simulator → Backend API → Firebase Realtime Database → Nuxt 4 Dashboard.
 
-## Architecture
+## Architecture (MVP)
 
 ```
 Simulator (Node.js)
-      │
-      │ HTTP POST /api/ingest (every 5s)
+      │ HTTP POST /api/readings (every 5s)
       ▼
-Express Backend
-      ├── Rule Engine (threshold evaluation)
-      ├── Pump decision logic
-      └── Write to Firebase RTDB
-                  │
-                  │ Firebase Realtime listener
-                  ▼
-         Nuxt 3 Dashboard
+Express Backend (process + validate)
+      │ write
+      ▼
+Firebase Realtime Database
+      │ realtime listener
+      ▼
+Nuxt 4 + Tailwind Dashboard
 ```
 
 ## Project Structure
@@ -24,111 +22,65 @@ Express Backend
 ```
 smart-aquaponic/
 ├── apps/
-│   ├── web/          # Nuxt 3 frontend dashboard
-│   ├── api/          # Express.js backend API
-│   └── simulator/    # Node.js sensor simulator
-├── docs/
-│   └── architecture.md
-├── .env.example
-├── .gitignore
-└── README.md
+│   ├── api/          # Express backend (Firebase Admin writer)
+│   ├── simulator/    # Node.js sensor simulator (HTTP client)
+│   └── web/          # Nuxt 4 dashboard (Firebase listener)
+└── docs/
 ```
-
-## Sensor Thresholds
-
-| Parameter  | Min  | Max  | Unit |
-|------------|------|------|------|
-| pH         | 6.5  | 7.5  | –    |
-| TDS        | 200  | 800  | ppm  |
-| Turbidity  | –    | 50   | NTU  |
-
-## Prerequisites
-
-- Node.js 18+
-- npm or pnpm
-- Firebase project (free Spark plan)
-
-## Setup
-
-1. Clone the repository:
-```bash
-git clone <repo-url>
-cd smart-aquaponic
-```
-
-2. Install dependencies for all apps:
-```bash
-npm install --prefix apps/web
-npm install --prefix apps/api
-npm install --prefix apps/simulator
-```
-
-3. Configure environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your Firebase credentials
-```
-
-## Running the Apps
-
-### Backend (Express API)
-```bash
-cd apps/api
-npm run dev
-# Server runs on http://localhost:3001
-```
-
-### Simulator (Sensor Data Generator)
-```bash
-cd apps/simulator
-npm start
-# Sends data to http://localhost:3001/api/ingest every 5s
-```
-
-### Frontend (Nuxt 3 Dashboard)
-```bash
-cd apps/web
-npm run dev
-# Dashboard runs on http://localhost:3000
-```
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| POST | `/api/ingest` | Receive sensor data from simulator |
-| POST | `/api/pump/mode` | Switch pump mode (auto/manual) |
-| POST | `/api/pump/toggle` | Toggle pump state (manual mode only) |
 
 ## Firebase Schema
 
 ```
-/aquaponic
-  /sensors/latest         ← Latest sensor readings
-  /sensors/history/{id}   ← Historical data (last 30 min)
-  /alerts/latest          ← Current active alerts
-  /control/pump           ← Pump state { mode, state }
+/aquaponic/sensors
+  /latest          ← overwritten (1 record)
+  /history/{pushId}← append-only
 ```
 
-## Development
+## Prerequisites
 
-### Git Workflow
-```
-main          ← stable, production-ready
-  └── dev     ← integration branch
-        └── feature/ISSUE-XX-short-description
-```
+- Node.js 20+ (Nuxt 4 requirement)
+- Firebase project with Realtime Database enabled
+- A service account JSON for the backend (Firebase Admin SDK)
 
-### Commit Convention
-```
-feat(scope): description        → new feature
-fix(scope): description         → bug fix
-refactor(scope): description    → code improvement
-chore(scope): description       → config/setup
-docs(scope): description        → documentation
+## Setup
+
+```bash
+npm install --prefix apps/api
+npm install --prefix apps/simulator
+npm install --prefix apps/web
 ```
 
-## License
+Create env files:
+```bash
+cp apps/api/.env.example apps/api/.env
+cp apps/simulator/.env.example apps/simulator/.env
+cp apps/web/.env.example apps/web/.env
+```
 
-MIT
+## Run (3 terminals)
+
+Backend:
+```bash
+cd apps/api
+npm run dev
+```
+
+Simulator:
+```bash
+cd apps/simulator
+npm start
+```
+
+Dashboard:
+```bash
+cd apps/web
+npm run dev
+```
+
+Note:
+- If you don't set `NUXT_PUBLIC_FIREBASE_API_KEY`, dashboard will fall back to Firebase RTDB REST streaming (requires only `NUXT_PUBLIC_FIREBASE_DATABASE_URL` and open read rules).
+
+## Backend Endpoints
+
+- `GET /api/health`
+- `POST /api/readings` (alias: `POST /api/ingest`)

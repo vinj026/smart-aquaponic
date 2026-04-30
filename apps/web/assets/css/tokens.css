@@ -1,0 +1,195 @@
+:root {
+  --color-canvas: #fafafa;
+  --color-canvas-secondary: #f5f5f5;
+  --color-canvas-grouped: #f0f0f0;
+
+  --color-ink: #111111;
+  --color-ink-secondary: #555555;
+  --color-ink-tertiary: #888888;
+  --color-ink-quaternary: #aaaaaa;
+
+  --color-accent: #22c55e;
+  --color-accent-2: #16a34a;
+  --color-accent-light: rgba(34, 197, 94, 0.08);
+  --color-accent-bg: #f0fdf4;
+
+  --color-danger: #ef4444;
+  --color-danger-bg: #fef2f2;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --color-success: #22c55e;
+  --color-success-bg: #f0fdf4;
+
+  --color-border: #e5e5e5;
+  --color-surface: #f9fafb;
+  --color-separator: #e5e5e5;
+  --color-separator-opaque: #d4d4d4;
+
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 20px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-section: 48px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  --shadow-none: none;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+
+  --type-display-size: 28px;
+  --type-display-line: 1.07;
+  --type-display-tracking: -0.28px;
+
+  --type-title-1-size: 22px;
+  --type-title-1-line: 1.1;
+  --type-title-1-tracking: -0.26px;
+
+  --type-title-2-size: 17px;
+  --type-title-2-line: 1.24;
+  --type-title-2-tracking: -0.41px;
+
+  --type-body-size: 17px;
+  --type-body-line: 1.47;
+  --type-body-tracking: -0.41px;
+
+  --type-callout-size: 16px;
+  --type-callout-line: 1.375;
+  --type-callout-tracking: -0.31px;
+
+  --type-subhead-size: 15px;
+  --type-subhead-line: 1.33;
+  --type-subhead-tracking: -0.23px;
+
+  --type-footnote-size: 13px;
+  --type-footnote-line: 1.38;
+  --type-footnote-tracking: -0.07px;
+
+  --type-caption-size: 12px;
+  --type-caption-line: 1.33;
+  --type-caption-tracking: 0;
+}
+
+html {
+  font-family: var(--font-system);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+  background-attachment: fixed;
+}
+
+button {
+  font: inherit;
+}
+
+.type-display {
+  font-size: var(--type-display-size);
+  font-weight: 700;
+  line-height: var(--type-display-line);
+  letter-spacing: var(--type-display-tracking);
+}
+
+.type-title-1 {
+  font-size: var(--type-title-1-size);
+  font-weight: 700;
+  line-height: var(--type-title-1-line);
+  letter-spacing: var(--type-title-1-tracking);
+}
+
+.type-title-2,
+.type-headline {
+  font-size: var(--type-title-2-size);
+  font-weight: 600;
+  line-height: var(--type-title-2-line);
+  letter-spacing: var(--type-title-2-tracking);
+}
+
+.type-body {
+  font-size: var(--type-body-size);
+  font-weight: 400;
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-tracking);
+}
+
+.type-callout {
+  font-size: var(--type-callout-size);
+  font-weight: 400;
+  line-height: var(--type-callout-line);
+  letter-spacing: var(--type-callout-tracking);
+}
+
+.type-subhead {
+  font-size: var(--type-subhead-size);
+  font-weight: 400;
+  line-height: var(--type-subhead-line);
+  letter-spacing: var(--type-subhead-tracking);
+}
+
+.type-footnote {
+  font-size: var(--type-footnote-size);
+  font-weight: 400;
+  line-height: var(--type-footnote-line);
+  letter-spacing: var(--type-footnote-tracking);
+}
+
+.type-caption {
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--type-caption-tracking);
+}
+
+.pressable {
+  transition: transform 0.12s ease;
+}
+
+.pressable:active {
+  transform: scale(0.96);
+}
+
+.surface-card {
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.surface-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-float);
+}
+
+.appear {
+  animation: card-appear 0.3s ease-out both;
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mono-number {
+  font-family: "Geist Mono", "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
