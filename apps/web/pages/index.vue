@@ -7,31 +7,51 @@
       
       <!-- Compact Header -->
       <header class="flex items-center justify-between bg-white border border-gray-200 px-3 py-2 rounded-md shadow-sm">
-        <div class="flex items-center gap-2">
-          <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
-          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900">Aquaguard IoT</h1>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 border border-gray-100 rounded-full">
+            <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
+            <span class="text-[9px] font-bold uppercase tracking-wider text-gray-500">{{ systemHealthLabel }}</span>
+          </div>
+          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 border-l border-gray-100 pl-3">Aquaguard IoT</h1>
         </div>
-        <div class="text-[10px] text-gray-400 font-medium">Live sync: {{ lastUpdatedText }}</div>
+        <div class="text-[10px] text-gray-400 font-medium">Updated {{ timeAgoText }}</div>
       </header>
       
-      <!-- System Alert Banner -->
+      <!-- Intelligent System Insight Box -->
       <div v-if="latest" 
-           class="px-4 py-3 rounded-md border flex gap-3 shadow-sm transition-all duration-300"
+           class="px-4 py-4 rounded-md border flex flex-col gap-3 shadow-sm transition-all duration-300"
            :class="alertClasses">
-        <div class="shrink-0 mt-0.5">
-           <svg v-if="latest.overall_status === 'normal'" class="w-4 h-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
-             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-           </svg>
-           <svg v-else class="w-4 h-4" :class="latest.overall_status === 'danger' ? 'text-red-500' : 'text-yellow-500'" viewBox="0 0 20 20" fill="currentColor">
-             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-           </svg>
+        <div class="flex items-start gap-3">
+          <div class="shrink-0 mt-0.5 p-1.5 rounded-full" :class="alertIconBgClass">
+             <svg v-if="latest.overall_status === 'normal'" class="w-3.5 h-3.4" viewBox="0 0 20 20" fill="currentColor">
+               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+             </svg>
+             <svg v-else class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+               <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+             </svg>
+          </div>
+          <div class="space-y-1 min-w-0">
+            <h2 class="text-[11px] font-bold uppercase tracking-widest leading-none flex items-center gap-2">
+               {{ alertTitle }}
+               <span v-if="latest.overall_status !== 'normal'" class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+               <span v-if="latest.overall_status !== 'normal'" class="text-[9px] lowercase font-medium opacity-70">Requires attention</span>
+            </h2>
+            <p class="text-[13px] font-medium leading-relaxed tracking-tight">
+               {{ insightText }}
+            </p>
+          </div>
         </div>
-        <div class="space-y-0.5 min-w-0">
-          <p class="text-[11px] font-bold uppercase tracking-wider leading-none" :class="alertTitleClass">
-             {{ alertTitle }}
-          </p>
-          <p class="text-[12px] font-medium leading-tight opacity-90 truncate">
-             {{ insightText }}
+        
+        <!-- Suggested Action (Only for non-normal) -->
+        <div v-if="latest.overall_status !== 'normal'" 
+             class="mt-1 pl-10 flex flex-col gap-1 border-t border-current/10 pt-3">
+          <span class="text-[9px] font-bold uppercase tracking-tighter opacity-60">Suggested Action</span>
+          <p class="text-[12px] font-semibold flex items-center gap-1.5">
+            <svg class="w-3 h-3 opacity-70" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+              <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+            </svg>
+            {{ suggestedAction }}
           </p>
         </div>
       </div>
@@ -83,7 +103,21 @@
       <!-- Prominent Chart Section -->
       <section class="bg-white border border-gray-200 rounded-md p-4 space-y-4 shadow-sm flex-1 flex flex-col">
         <div class="flex items-center justify-between">
-          <div class="text-[11px] font-bold text-gray-700 uppercase tracking-widest">Historical Trend</div>
+          <div class="flex flex-col gap-0.5">
+            <div class="text-[11px] font-bold text-gray-700 uppercase tracking-widest leading-none">Historical Trend</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-tighter">Velocity:</span>
+              <span class="text-[10px] font-bold uppercase tracking-tight flex items-center gap-1" :class="trendColor">
+                <svg v-if="trendDirection === 'up'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                <svg v-else-if="trendDirection === 'down'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                {{ trendLabel }}
+              </span>
+            </div>
+          </div>
           <div class="flex bg-gray-100 p-0.5 rounded-sm gap-0.5 border border-gray-200">
             <button v-for="opt in options" :key="opt.value"
               @click="selected = opt.value"
@@ -123,10 +157,32 @@ const options = [
   { label: 'Wtr', value: 'water_level' },
 ]
 
-const lastUpdatedText = computed(() => {
+const now = ref(Date.now())
+let timer = null
+onMounted(() => {
+  timer = setInterval(() => {
+    now.value = Date.now()
+  }, 1000)
+})
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
+})
+
+const timeAgoText = computed(() => {
   const ts = latest.value?.timestamp
   if (!ts) return '—'
-  return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  const diff = Math.floor((now.value - ts) / 1000)
+  if (diff < 5) return 'just now'
+  if (diff < 60) return `${diff}s ago`
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  return 'long ago'
+})
+
+const systemHealthLabel = computed(() => {
+  const s = latest.value?.overall_status
+  if (s === 'danger') return 'Critical'
+  if (s === 'warning') return 'Warning'
+  return 'Healthy'
 })
 
 function statusLabel(status) {
@@ -138,18 +194,42 @@ function statusLabel(status) {
 }
 
 const insightText = computed(() => {
-  const s = latest.value?.overall_status
-  if (s === 'danger') return 'Critical conditions detected in system components.'
-  if (s === 'warning') return 'Some parameters require attention soon.'
-  if (s === 'normal') return 'All systems operating nominally.'
-  return 'Initializing dashboard context...'
+  const l = latest.value
+  if (!l) return 'Initializing system context...'
+  
+  if (l.ph_status !== 'normal') {
+    return l.ph > 7.5 ? 'System pH is too alkaline. This can lead to nutrient lockout and plant deficiencies.' : 'Acidic pH detected. High acidity can stress fish and damage bacterial colonies.'
+  }
+  if (l.tds_status !== 'normal') {
+    return l.tds > 1000 ? 'Nutrient concentration is excessively high. Risk of root burn and toxic buildup.' : 'Nutrient levels are insufficient for optimal plant growth cycles.'
+  }
+  if (l.turbidity_status !== 'normal') {
+    return 'Water clarity is poor. Suspended solids may clog system pumps or indicate excess waste.'
+  }
+  if (l.water_level_status !== 'normal') {
+    return 'Water volume is critically low. Submersible pumps are at risk of running dry.'
+  }
+  
+  return 'All aquatic parameters are within optimal ranges for a balanced ecosystem.'
+})
+
+const suggestedAction = computed(() => {
+  const l = latest.value
+  if (!l) return null
+  
+  if (l.ph_status !== 'normal') return 'Adjust pH using diluted buffers and retest in 30 mins.'
+  if (l.tds_status !== 'normal') return 'Top up with fresh water or adjust nutrient dosing.'
+  if (l.turbidity_status !== 'normal') return 'Inspect mechanical filters and reduce fish feeding.'
+  if (l.water_level_status !== 'normal') return 'Immediate water replenishment required.'
+  
+  return null
 })
 
 const overallDotClass = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-500 animate-pulse outline outline-1 outline-offset-1 outline-red-200'
-  if (s === 'warning') return 'bg-yellow-500 outline outline-1 outline-offset-1 outline-yellow-200'
-  return 'bg-emerald-500' // normal layout
+  if (s === 'danger') return 'bg-red-500 animate-pulse'
+  if (s === 'warning') return 'bg-yellow-500'
+  return 'bg-emerald-500' 
 })
 
 const alertTitle = computed(() => {
@@ -166,10 +246,40 @@ const alertTitleClass = computed(() => {
   return 'text-emerald-700'
 })
 
+const alertIconBgClass = computed(() => {
+  const s = latest.value?.overall_status
+  if (s === 'danger') return 'bg-red-100/50 text-red-600'
+  if (s === 'warning') return 'bg-yellow-100/50 text-yellow-600'
+  return 'bg-emerald-100/50 text-emerald-600'
+})
+
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-50 text-red-600 border-red-200 ring-1 ring-red-100'
-  if (s === 'warning') return 'bg-yellow-50 text-yellow-600 border-yellow-200 ring-1 ring-yellow-100'
-  return 'bg-emerald-50 text-emerald-600 border-emerald-100 ring-1 ring-emerald-50/50'
+  if (s === 'danger') return 'bg-red-50/50 text-red-700 border-red-200'
+  if (s === 'warning') return 'bg-yellow-50/50 text-yellow-700 border-yellow-200'
+  return 'bg-emerald-50/30 text-emerald-700 border-emerald-100'
+})
+
+const trendDirection = computed(() => {
+  if (!history.value || history.value.length < 2) return 'stable'
+  const current = history.value[history.value.length - 1][selected.value]
+  const previous = history.value[history.value.length - 2][selected.value]
+  if (Math.abs(current - previous) < 0.01) return 'stable'
+  return current > previous ? 'up' : 'down'
+})
+
+const trendLabel = computed(() => {
+  const d = trendDirection.value
+  if (d === 'up') return 'Increasing'
+  if (d === 'down') return 'Decreasing'
+  return 'Stable'
+})
+
+const trendColor = computed(() => {
+  const d = trendDirection.value
+  if (d === 'stable') return 'text-gray-400'
+  // Color depends on parameter. some 'up' is good, some bad. 
+  // For now just using neutral blue for movement or gray for stable
+  return 'text-blue-600'
 })
 </script>
