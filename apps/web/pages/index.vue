@@ -1,20 +1,30 @@
 <template>
-  <main class="min-h-screen bg-[#FAFAFA] text-gray-800 font-sans relative overflow-x-hidden">
+  <main class="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-sans relative overflow-x-hidden transition-colors duration-300">
     <!-- Subtle dot grid background for technical depth -->
-    <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(#d1d5db 1px, transparent 1px); background-size: 16px 16px;"></div>
+    <div class="fixed inset-0 pointer-events-none opacity-20 dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
     
     <div class="max-w-md mx-auto relative z-10 px-4 py-8 space-y-6">
       
       <!-- Compact Header -->
-      <header class="flex items-center justify-between bg-white border border-gray-200 px-3 py-2 rounded-md shadow-sm">
+      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 border border-gray-100 rounded-full">
+          <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-full">
             <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
-            <span class="text-[9px] font-bold uppercase tracking-wider text-gray-500">{{ systemHealthLabel }}</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ systemHealthLabel }}</span>
           </div>
-          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 border-l border-gray-100 pl-3">Aquaguard IoT</h1>
+          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Aquaguard IoT</h1>
         </div>
-        <div class="text-[10px] text-gray-400 font-medium">Updated {{ timeAgoText }}</div>
+        <div class="flex items-center gap-3">
+          <div class="text-[10px] text-gray-400 dark:text-gray-500 font-medium">Updated {{ timeAgoText }}</div>
+          <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
+            <button @click="exportCsv" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Export CSV" aria-label="Export Data">
+              <DownloadIcon class="w-3.5 h-3.5" />
+            </button>
+            <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Toggle Theme" aria-label="Toggle Dark Mode">
+              <component :is="colorMode.value === 'dark' ? SunIcon : MoonIcon" class="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
       </header>
       
       <!-- Intelligent System Insight Box -->
@@ -90,29 +100,30 @@
 
       <!-- Lifecycle Information Compact Row -->
       <section class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
-        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex flex-col justify-center gap-0.5">
+        <div class="px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
            <div class="flex items-center justify-between">
-             <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wide">Crop Age</span>
-             <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-sm">{{ cropLifecycle }}</span>
+             <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Crop Age</span>
+             <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded-sm">{{ cropLifecycle }}</span>
            </div>
-           <span class="text-sm font-bold text-gray-800">{{ cropAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
+           <span class="text-sm font-bold text-gray-800 dark:text-gray-100">{{ cropAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
         </div>
-        <div class="px-3 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex flex-col justify-center gap-0.5">
+        <div class="px-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
            <div class="flex items-center justify-between">
-             <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wide">Fish Age</span>
-             <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-sm">{{ fishLifecycle }}</span>
+             <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Fish Age</span>
+             <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-sm">{{ fishLifecycle }}</span>
            </div>
-           <span class="text-sm font-bold text-gray-800">{{ fishAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
+           <span class="text-sm font-bold text-gray-800 dark:text-gray-100">{{ fishAge }} <span class="text-[10px] font-medium opacity-60">Days</span></span>
         </div>
       </section>
 
       <!-- Prominent Chart Section -->
-      <section class="bg-white border border-gray-200 rounded-md p-4 space-y-4 shadow-sm flex-1 flex flex-col">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-0.5">
-            <div class="text-[11px] font-bold text-gray-700 uppercase tracking-widest leading-none">Historical Trend</div>
-            <div class="flex items-center gap-1.5 mt-0.5">
-              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-tighter">Velocity:</span>
+      <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 space-y-4 shadow-sm flex-1 flex flex-col transition-colors duration-300">
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-widest leading-none">Historical Trend</div>
+            
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-tighter">Velocity:</span>
               <span class="text-[10px] font-bold uppercase tracking-tight flex items-center gap-1" :class="trendColor">
                 <svg v-if="trendDirection === 'up'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -124,14 +135,29 @@
               </span>
             </div>
           </div>
-          <div class="flex bg-gray-100 p-0.5 rounded-sm gap-0.5 border border-gray-200">
-            <button v-for="opt in options" :key="opt.value"
-              @click="selected = opt.value"
-              class="text-[10px] px-2.5 py-1 font-medium rounded-sm uppercase tracking-wide transition-colors"
-              :class="selected === opt.value ? 'bg-white shadow-sm text-gray-900 border border-gray-200/50' : 'text-gray-500'"
-            >
-              {{ opt.label }}
-            </button>
+          
+          <div class="flex items-center justify-between border-t border-gray-100 dark:border-slate-800/50 pt-3">
+            <!-- Time Range Selector -->
+            <div class="flex gap-1">
+              <button v-for="tr in timeRanges" :key="tr.value"
+                @click="selectedTime = tr.value"
+                class="text-[9px] px-2 py-1 font-bold rounded-sm tracking-wider transition-colors border border-transparent"
+                :class="selectedTime === tr.value ? 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 shadow-sm border-gray-200 dark:border-slate-700' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'"
+              >
+                {{ tr.label }}
+              </button>
+            </div>
+            
+            <!-- Metric Selector -->
+            <div class="flex bg-gray-100 dark:bg-slate-800 p-0.5 rounded-sm gap-0.5 border border-gray-200 dark:border-slate-700 transition-colors duration-300">
+              <button v-for="opt in options" :key="opt.value"
+                @click="selected = opt.value"
+                class="text-[9px] px-2 py-1 font-bold rounded-sm tracking-wider transition-colors"
+                :class="selected === opt.value ? 'bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white border border-gray-200/50 dark:border-slate-600/50' : 'text-gray-500 dark:text-gray-400'"
+              >
+                {{ opt.label }}
+              </button>
+            </div>
           </div>
         </div>
         <div class="h-56 mt-2 relative">
@@ -141,17 +167,64 @@
         </div>
       </section>
 
+      <!-- Event Log Timeline -->
+      <EventLog :events="events" class="mt-4" />
     </div>
+
+    <!-- Bottom Navigation -->
+    <BottomNav :severity="latest?.overall_status || 'normal'" />
   </main>
 </template>
 
 <script setup>
-import CompactSensorRow from '~/components/CompactSensorRow.vue'
-import MinimalChart from '~/components/MinimalChart.vue'
-import { useLatestReading, useReadingHistory } from '~/composables/useSupabaseData'
+import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, ChevronRight as ChevronRightIcon } from 'lucide-vue-next'
+import BottomNav from '~/components/BottomNav.vue'
+import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
+
+const colorMode = useColorMode()
+function toggleColorMode() {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
+
+function exportCsv() {
+  const rows = history.value
+  if (!rows || rows.length === 0) return
+
+  const headers = ['Timestamp', 'pH', 'pH Status', 'TDS', 'TDS Status', 'Turbidity', 'Turbidity Status', 'Water Level', 'Water Level Status', 'Overall Status']
+  const csv = [
+    headers.join(','),
+    ...rows.map(r => [
+      new Date(r.timestamp).toISOString(),
+      r.ph, r.ph_status,
+      r.tds, r.tds_status,
+      r.turbidity, r.turbidity_status,
+      r.water_level, r.water_level_status,
+      r.overall_status
+    ].join(','))
+  ].join('\n')
+
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.setAttribute('href', url)
+  a.setAttribute('download', `aquaguard-export-${Date.now()}.csv`)
+  a.click()
+  window.URL.revokeObjectURL(url)
+}
 
 const { reading } = useLatestReading()
-const { history } = useReadingHistory(20)
+const { config } = useLifecycleConfig()
+
+const selectedTime = ref(60) // Default 1H (60 minutes)
+const timeRanges = [
+  { label: '1H', value: 60 },
+  { label: '6H', value: 360 },
+  { label: '24H', value: 1440 },
+  { label: '7D', value: 10080 },
+]
+
+const { history } = useReadingHistory(selectedTime)
+const { events } = useSystemEvents(5)
 
 const latest = computed(() => reading.value)
 
@@ -192,12 +265,23 @@ const systemHealthLabel = computed(() => {
 })
 
 // Lifecycle Logic
-// Note: Hardcoding initial values for demonstration, ideally synced from DB
-const cropAge = ref(32)
-const fishAge = ref(38)
+const cropAge = computed(() => {
+  if (!config.value.crop_start_date) return 0
+  const start = new Date(config.value.crop_start_date)
+  const diffTime = now.value - start.getTime()
+  return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)))
+})
+
+const fishAge = computed(() => {
+  if (!config.value.fish_start_date) return 0
+  const start = new Date(config.value.fish_start_date)
+  const diffTime = now.value - start.getTime()
+  return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)))
+})
 
 const cropLifecycle = computed(() => {
   const a = cropAge.value
+  if (a === 0) return 'Not Set'
   if (a < 7) return 'Seedling'
   if (a < 21) return 'Vegetative'
   if (a < 30) return 'Maturing'
@@ -206,6 +290,7 @@ const cropLifecycle = computed(() => {
 
 const fishLifecycle = computed(() => {
   const a = fishAge.value
+  if (a === 0) return 'Not Set'
   if (a < 14) return 'Fry'
   if (a < 30) return 'Fingerling'
   if (a < 60) return 'Grow-out'
@@ -222,8 +307,26 @@ function statusLabel(status) {
 
 const insightText = computed(() => {
   const l = latest.value
+  const h = history.value
   if (!l) return 'Initializing system context...'
   
+  // 1. Advanced Correlation & Trend Detection
+  if (h.length >= 5) {
+    const lastFive = h.slice(-5)
+    const tdsTrend = lastFive[4].tds - lastFive[0].tds
+    
+    // pH High + TDS High + Turbidity Up = Overfeeding
+    if (l.ph_status !== 'normal' && l.ph > 7.5 && l.tds > 700 && tdsTrend > 0 && l.turbidity_status !== 'normal') {
+      return 'Potential overfeeding detected. High pH and rising TDS levels correlated with poor clarity suggest excess organic waste.'
+    }
+    
+    // Rising TDS Trend
+    if (tdsTrend > 100 && l.tds_status === 'normal') {
+      return 'Nutrient levels (TDS) are rising rapidly. Monitor closely to avoid potential root burn.'
+    }
+  }
+
+  // 2. Critical Sensor Alerts
   if (l.ph_status !== 'normal') {
     return l.ph > 7.5 ? 'System pH is too alkaline. This can lead to nutrient lockout and plant deficiencies.' : 'Acidic pH detected. High acidity can stress fish and damage bacterial colonies.'
   }
@@ -237,12 +340,12 @@ const insightText = computed(() => {
     return 'Water volume is critically low. Submersible pumps are at risk of running dry.'
   }
   
-  // If sensors are normal, let's look at lifecycle context.
+  // 3. Lifecycle Context (if sensors are normal)
   if (cropLifecycle.value === 'Near Harvest') {
-    return `Crop has reached the ${cropLifecycle.value} phase. Nutrient uptake will slow down.`
+    return `Crop has reached the ${cropLifecycle.value} phase. Nutrient uptake will slow down as metabolic activity shifts.`
   }
   if (cropLifecycle.value === 'Vegetative') {
-    return `Crop is in active ${cropLifecycle.value} growth. Maintaining current normal conditions is ideal.`
+    return `Crop is in active ${cropLifecycle.value} growth. Maintaining current normal conditions is ideal for biomass production.`
   }
   
   return 'All aquatic parameters are within optimal ranges for a balanced ecosystem.'
@@ -294,9 +397,9 @@ const alertIconBgClass = computed(() => {
 
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-50/50 text-red-700 border-red-200'
-  if (s === 'warning') return 'bg-yellow-50/50 text-yellow-700 border-yellow-200'
-  return 'bg-emerald-50/30 text-emerald-700 border-emerald-100'
+  if (s === 'danger') return 'bg-red-50/50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900/50'
+  if (s === 'warning') return 'bg-yellow-50/50 dark:bg-yellow-950/30 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-900/50'
+  return 'bg-emerald-50/30 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30'
 })
 
 const trendDirection = computed(() => {
@@ -316,9 +419,7 @@ const trendLabel = computed(() => {
 
 const trendColor = computed(() => {
   const d = trendDirection.value
-  if (d === 'stable') return 'text-gray-400'
-  // Color depends on parameter. some 'up' is good, some bad. 
-  // For now just using neutral blue for movement or gray for stable
-  return 'text-blue-600'
+  if (d === 'stable') return 'text-gray-400 dark:text-gray-500'
+  return 'text-blue-600 dark:text-blue-400'
 })
 </script>
