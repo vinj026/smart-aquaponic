@@ -1,75 +1,124 @@
 import 'dotenv/config'
+import { createClient } from '@supabase/supabase-js'
 
-const backendUrl = (process.env.BACKEND_URL || 'http://localhost:3001').replace(/\/$/, '')
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 const intervalSeconds = Number.parseFloat(process.env.INTERVAL_SECONDS || '5')
-const intervalMs = Number.isFinite(intervalSeconds) ? Math.max(0.5, intervalSeconds) * 1000 : 5000
+const intervalMs = Math.max(0.5, intervalSeconds) * 1000
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('[simulator] Missing SUPABASE_URL or SUPABASE_ANON_KEY')
+  process.exit(1)
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+const thresholds = {
+  ph: { warningLow: 6.2, normalLow: 6.5, normalHigh: 7.5, warningHigh: 7.8 },
+  tds: { warningLow: 200, normalLow: 300, normalHigh: 700, warningHigh: 800 },
+  turbidity: { normalHigh: 5, warningHigh: 8 },
+  water_level: { warningLow: 65, normalLow: 70 },
+}
+
+function getStatus(metric, value) {
+  const t = thresholds[metric]
+  if (!t) return 'normal'
+
+  // Danger logic
+  if ((t.warningLow !== undefined && value < t.warningLow) || (t.warningHigh !== undefined && value > t.warningHigh)) {
+    return 'danger'
+  }
+  // Warning logic
+  if ((t.normalLow !== undefined && value < t.normalLow) || (t.normalHigh !== undefined && value > t.normalHigh)) {
+    return 'warning'
+  }
+  return 'normal'
+}
 
 function generateSensorData() {
+  // Occasionally generate anomalies
+  const isAnomaly = Math.random() > 0.85
+
   return {
-    ph: Number.parseFloat((Math.random() * (8.5 - 5.5) + 5.5).toFixed(2)),
-    tds: Number.parseFloat((Math.random() * (1000 - 100) + 100).toFixed(1)),
-    turbidity: Number.parseFloat((Math.random() * 80).toFixed(1)),
-    water_level: Number.parseFloat((Math.random() * (100 - 10) + 10).toFixed(1)),
+    ph: isAnomaly 
+      ? Number.parseFloat((Math.random() * (9.0 - 5.0) + 5.0).toFixed(2))
+      : Number.parseFloat((Math.random() * (7.6 - 6.4) + 6.4).toFixed(2)),
+    tds: isAnomaly
+      ? Math.floor(Math.random() * (1000 - 50) + 50)
+      : Math.floor(Math.random() * (750 - 250) + 250),
+    turbidity: isAnomaly
+      ? Number.parseFloat((Math.random() * 15).toFixed(1))
+      : Number.parseFloat((Math.random() * 6).toFixed(1)),
+    water_level: isAnomaly
+      ? Math.floor(Math.random() * (100 - 50) + 50)
+      : Math.floor(Math.random() * (95 - 75) + 75),
   }
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function postReading(payload) {
-  const res = await fetch(`${backendUrl}/api/readings`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-
-  const text = await res.text()
-  let json = null
-  try {
-    json = text ? JSON.parse(text) : null
-  } catch {
-    // ignore
-  }
-
-  if (!res.ok) {
-    const message = json?.error || `${res.status} ${res.statusText}`
-    throw new Error(message)
-  }
-
-  return json
 }
 
 async function main() {
-  // eslint-disable-next-line no-console
-  console.log(`[simulator] sending readings to ${backendUrl} every ${Math.round(intervalMs)}ms`)
+  console.log(`[simulator] sending readings to Supabase every ${Math.round(intervalMs)}ms`)
+  
+  let lastStatuses = {}
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const raw = generateSensorData()
     const startedAt = Date.now()
 
+    const ph_status = getStatus('ph', raw.ph)
+    const tds_status = getStatus('tds', raw.tds)
+    const turbidity_status = getStatus('turbidity', raw.turbidity)
+    const water_level_status = getStatus('water_level', raw.water_level)
+
+    const statuses = [ph_status, tds_status, turbidity_status, water_level_status]
+    const overall_status = statuses.includes('danger') ? 'danger' : statuses.includes('warning') ? 'warning' : 'normal'
+
+    const reading = {
+      ...raw,
+      ph_status,
+      tds_status,
+      turbidity_status,
+      water_level_status,
+      overall_status,
+      timestamp: new Date().toISOString()
+    }
+
     try {
-      const result = await postReading(raw)
-      const processed = result?.data || result
-      // eslint-disable-next-line no-console
+      const { error } = await supabase.from('sensor_readings').insert(reading)
+      if (error) throw error
+
       console.log(
-        `[simulator] ok ph=${processed.ph}(${processed.ph_status}) tds=${processed.tds}(${processed.tds_status}) turb=${processed.turbidity}(${processed.turbidity_status}) wl=${processed.water_level}(${processed.water_level_status}) overall=${processed.overall_status}`,
+        `[simulator] OK | ph:${raw.ph}(${ph_status}) | tds:${raw.tds}(${tds_status}) | turb:${raw.turbidity}(${turbidity_status}) | wl:${raw.water_level}(${water_level_status}) | ${overall_status}`
       )
+
+      // Handle Event Logging (Simplistic)
+      const currentStatuses = { ph: ph_status, tds: tds_status, turbidity: turbidity_status, water_level: water_level_status }
+      for (const [metric, status] of Object.entries(currentStatuses)) {
+        if (lastStatuses[metric] && lastStatuses[metric] !== status) {
+          // Status changed!
+          let type = status === 'normal' ? 'recovery' : status
+          let message = status === 'normal' 
+            ? `${metric.toUpperCase()} has recovered to normal levels.`
+            : `${metric.toUpperCase()} entered ${status} state with value ${raw[metric]}.`
+
+          await supabase.from('sensor_events').insert({
+            type,
+            metric,
+            value: raw[metric],
+            message,
+            timestamp: new Date().toISOString()
+          })
+          console.log(`[simulator] Event logged: ${message}`)
+        }
+      }
+      lastStatuses = currentStatuses
+
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      // eslint-disable-next-line no-console
-      console.error(`[simulator] error: ${message}`)
+      console.error(`[simulator] Error: ${err.message}`)
     }
 
     const elapsed = Date.now() - startedAt
-    await sleep(Math.max(0, intervalMs - elapsed))
+    await new Promise(resolve => setTimeout(resolve, Math.max(0, intervalMs - elapsed)))
   }
 }
 
-main().catch((err) => {
-  // eslint-disable-next-line no-console
-  console.error(err)
-  process.exitCode = 1
-})
-
+main()
