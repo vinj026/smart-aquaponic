@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-sans relative overflow-x-hidden transition-colors duration-300 pb-24">
+  <main class="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-sans relative overflow-x-hidden transition-colors duration-300">
     <!-- Subtle dot grid background -->
     <div class="fixed inset-0 pointer-events-none opacity-20 dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
 
@@ -68,8 +68,7 @@
       </div>
     </div>
 
-    <!-- Reusing the BottomNav (To be added later) -->
-    <BottomNav severity="normal" />
+    </div>
   </main>
 </template>
 
@@ -77,7 +76,6 @@
 import { ref, reactive, watch } from 'vue'
 import { useLifecycleConfig } from '~/composables/useSupabaseData'
 import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon } from 'lucide-vue-next'
-import BottomNav from '~/components/BottomNav.vue'
 
 const colorMode = useColorMode()
 function toggleColorMode() {

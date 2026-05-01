@@ -17,6 +17,9 @@
         <div class="flex items-center gap-3">
           <div class="text-[10px] text-gray-400 dark:text-gray-500 font-medium">Updated {{ timeAgoText }}</div>
           <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
+            <NuxtLink to="/config" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Settings">
+              <SettingsIcon class="w-3.5 h-3.5" />
+            </NuxtLink>
             <button @click="exportCsv" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Export CSV" aria-label="Export Data">
               <DownloadIcon class="w-3.5 h-3.5" />
             </button>
@@ -170,16 +173,15 @@
       <!-- Event Log Timeline -->
       <EventLog :events="events" class="mt-4" />
     </div>
-
-    <!-- Bottom Navigation -->
-    <BottomNav :severity="latest?.overall_status || 'normal'" />
   </main>
 </template>
 
 <script setup>
-import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, ChevronRight as ChevronRightIcon } from 'lucide-vue-next'
-import BottomNav from '~/components/BottomNav.vue'
+import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as SettingsIcon } from 'lucide-vue-next'
 import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
+import CompactSensorRow from '~/components/CompactSensorRow.vue'
+import MinimalChart from '~/components/MinimalChart.vue'
+import EventLog from '~/components/EventLog.vue'
 
 const colorMode = useColorMode()
 function toggleColorMode() {
