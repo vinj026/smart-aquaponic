@@ -178,8 +178,6 @@
         </div>
       </section>
 
-      <!-- Event Log Timeline -->
-      <EventLog :events="events" class="mt-4" />
     </div>
   </main>
 </template>
@@ -189,7 +187,6 @@ import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as
 import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
 import CompactSensorRow from '~/components/CompactSensorRow.vue'
 import MinimalChart from '~/components/MinimalChart.vue'
-import EventLog from '~/components/EventLog.vue'
 
 const colorMode = useColorMode()
 function toggleColorMode() {
