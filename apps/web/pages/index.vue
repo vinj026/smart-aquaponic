@@ -17,6 +17,14 @@
         <div class="flex items-center gap-3">
           <div class="text-[10px] text-gray-400 dark:text-gray-500 font-medium">Updated {{ timeAgoText }}</div>
           <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
+            <NuxtLink to="/alerts" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 relative" title="Alerts">
+              <BellIcon class="w-3.5 h-3.5" />
+              <!-- Optional Notification dot for danger overall -->
+              <span v-if="systemHealthLabel !== 'Normal'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+            </NuxtLink>
+            <NuxtLink to="/logs" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Logs">
+              <ActivityIcon class="w-3.5 h-3.5" />
+            </NuxtLink>
             <NuxtLink to="/config" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Settings">
               <SettingsIcon class="w-3.5 h-3.5" />
             </NuxtLink>
@@ -177,7 +185,7 @@
 </template>
 
 <script setup>
-import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as SettingsIcon } from 'lucide-vue-next'
+import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as SettingsIcon, Activity as ActivityIcon, Bell as BellIcon } from 'lucide-vue-next'
 import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
 import CompactSensorRow from '~/components/CompactSensorRow.vue'
 import MinimalChart from '~/components/MinimalChart.vue'
