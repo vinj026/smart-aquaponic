@@ -28,8 +28,14 @@
             <NuxtLink to="/config" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Settings">
               <SettingsIcon class="w-3.5 h-3.5" />
             </NuxtLink>
-            <button @click="exportCsv" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Export CSV" aria-label="Export Data">
-              <DownloadIcon class="w-3.5 h-3.5" />
+            <button 
+              @click="exportCsv" 
+              class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 relative" 
+              :disabled="isExporting"
+              title="Export CSV" 
+              aria-label="Export Data"
+            >
+              <DownloadIcon class="w-3.5 h-3.5" :class="{ 'animate-bounce opacity-50': isExporting }" />
             </button>
             <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Toggle Theme" aria-label="Toggle Dark Mode">
               <component :is="colorMode.value === 'dark' ? SunIcon : MoonIcon" class="w-3.5 h-3.5" />
@@ -148,12 +154,12 @@
           </div>
           
           <div class="flex items-center justify-between border-t border-gray-100 dark:border-slate-800/50 pt-3">
-            <!-- Time Range Selector -->
-            <div class="flex gap-1">
+            <!-- Time Range Selector (Pill Style) -->
+            <div class="flex bg-gray-100 dark:bg-slate-800 p-0.5 rounded-full gap-0.5 border border-gray-200 dark:border-slate-700 transition-colors duration-300">
               <button v-for="tr in timeRanges" :key="tr.value"
                 @click="selectedTime = tr.value"
-                class="text-[9px] px-2 py-1 font-bold rounded-sm tracking-wider transition-colors border border-transparent"
-                :class="selectedTime === tr.value ? 'bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 shadow-sm border-gray-200 dark:border-slate-700' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'"
+                class="text-[9px] px-2.5 py-1 font-bold rounded-full tracking-wider transition-all"
+                :class="selectedTime === tr.value ? 'bg-white dark:bg-slate-600 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
               >
                 {{ tr.label }}
               </button>
@@ -193,7 +199,14 @@ function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
-function exportCsv() {
+const isExporting = ref(false)
+async function exportCsv() {
+  if (isExporting.value) return
+  isExporting.value = true
+  
+  // Simulate a bit of processing for UX
+  await new Promise(r => setTimeout(r, 800))
+
   const rows = history.value
   if (!rows || rows.length === 0) return
 
@@ -217,6 +230,7 @@ function exportCsv() {
   a.setAttribute('download', `aquaguard-export-${Date.now()}.csv`)
   a.click()
   window.URL.revokeObjectURL(url)
+  isExporting.value = false
 }
 
 const { reading } = useLatestReading()

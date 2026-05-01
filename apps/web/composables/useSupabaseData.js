@@ -5,50 +5,53 @@ import { supabase } from '~/utils/supabase'
  * Subscribes to the latest sensor reading via Supabase Realtime.
  * Returns a reactive `reading` ref that updates on every new INSERT.
  */
+// Shared state to ensure all components use the same connection
+const sharedLatestReading = ref(null)
+let latestChannel = null
+
 export function useLatestReading() {
-    const reading = ref(null)
-    let channel = null
-
     onMounted(async () => {
-        // Fetch the most recent reading on mount
-        const { data } = await supabase
-            .from('sensor_readings')
-            .select('*')
-            .order('timestamp', { ascending: false })
-            .limit(1)
-            .maybeSingle()
+        // Only fetch and subscribe if not already done
+        if (!sharedLatestReading.value) {
+            const { data } = await supabase
+                .from('sensor_readings')
+                .select('*')
+                .order('timestamp', { ascending: false })
+                .limit(1)
+                .maybeSingle()
 
-        if (data) {
-            reading.value = {
-                ...data,
-                timestamp: new Date(data.timestamp).getTime(),
+            if (data) {
+                sharedLatestReading.value = {
+                    ...data,
+                    timestamp: new Date(data.timestamp).getTime(),
+                }
             }
         }
 
-        // Subscribe to new INSERTs via Realtime
-        channel = supabase
-            .channel('sensor-readings-latest')
-            .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'sensor_readings' },
-                (payload) => {
-                    const row = payload.new
-                    reading.value = {
-                        ...row,
-                        timestamp: new Date(row.timestamp).getTime(),
+        // Only subscribe once
+        if (!latestChannel) {
+            latestChannel = supabase
+                .channel('global-sensor-readings')
+                .on(
+                    'postgres_changes',
+                    { event: 'INSERT', schema: 'public', table: 'sensor_readings' },
+                    (payload) => {
+                        const row = payload.new
+                        if (row) {
+                            sharedLatestReading.value = {
+                                ...row,
+                                timestamp: new Date(row.timestamp).getTime(),
+                            }
+                        }
                     }
-                }
-            )
-            .subscribe()
-    })
-
-    onBeforeUnmount(() => {
-        if (channel) {
-            supabase.removeChannel(channel)
+                )
+                .subscribe((status) => {
+                    console.log('[supabase] Realtime status:', status)
+                })
         }
     })
 
-    return { reading }
+    return { reading: sharedLatestReading }
 }
 
 /**
