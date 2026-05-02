@@ -3,7 +3,7 @@
     <!-- Subtle dot grid background -->
     <div class="fixed inset-0 pointer-events-none opacity-20 dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
 
-    <div class="max-w-md mx-auto relative z-10 px-4 py-8 space-y-6">
+    <div class="mx-auto relative z-10 px-4 py-8 space-y-6 transition-all duration-500" :class="isDesktopLayout ? 'max-w-6xl' : 'max-w-md'">
       <!-- Header -->
       <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
@@ -13,12 +13,16 @@
           <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">System Config</h1>
         </div>
         <div class="flex items-center gap-3">
+          <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+            <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
+          </button>
           <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1">
             <component :is="colorMode.value === 'dark' ? SunIcon : MoonIcon" class="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
 
+      <div :class="isDesktopLayout ? 'grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-6 items-start' : 'space-y-6'">
       <!-- Config Form Card -->
       <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
         <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
@@ -70,6 +74,7 @@
           The system uses these dates to calculate the "Age" of your plants and fish, which directly influences the intelligent diagnosis and suggested actions.
         </p>
       </div>
+      </div>
 
       <!-- Sensor Thresholds Section -->
       <section class="space-y-4">
@@ -120,9 +125,10 @@
 <script setup>
 import { ref, reactive, watch } from 'vue'
 import { useLifecycleConfig, useThresholds } from '~/composables/useSupabaseData'
-import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon } from 'lucide-vue-next'
+import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
 
 const colorMode = useColorMode()
+const { isDesktopLayout, toggleLayoutMode } = useLayoutMode()
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }

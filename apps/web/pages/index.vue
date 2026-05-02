@@ -35,7 +35,7 @@
             >
               <DownloadIcon class="w-3.5 h-3.5" :class="{ 'animate-bounce opacity-50': isExporting }" />
             </button>
-            <button @click="isDesktopLayout = !isDesktopLayout" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+            <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
               <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
             </button>
             <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1">
@@ -295,7 +295,7 @@ function toggleColorMode() {
 }
 
 // State & Data
-const isDesktopLayout = ref(false)
+const { isDesktopLayout, toggleLayoutMode } = useLayoutMode()
 const isExporting = ref(false)
 const selectedTime = ref(60) // Minutes
 const selected = ref('turbidity')
