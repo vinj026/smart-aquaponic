@@ -10,7 +10,7 @@
           <NuxtLink to="/" class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Event Logs</h1>
+          <h1 class="text-xl font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Event Logs</h1>
         </div>
         <div class="flex items-center gap-3">
           <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
@@ -25,19 +25,19 @@
       <!-- Logs Card -->
       <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
         <div class="space-y-1">
-          <h2 class="text-sm font-bold text-gray-900 dark:text-gray-100">System Logs</h2>
-          <p class="text-[11px] text-gray-500 dark:text-gray-400">Chronological history of all system events.</p>
+          <h2 class="text-base font-medium text-gray-900 dark:text-gray-100">System Logs</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Chronological history of all system events.</p>
         </div>
 
-        <div v-if="loading && events.length === 0" class="text-[11px] text-gray-500 dark:text-gray-400 text-center py-8">
+        <div v-if="loading && events.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
           Loading logs...
         </div>
 
-        <div v-else-if="error && events.length === 0" class="text-[11px] text-red-500 dark:text-red-400 text-center py-8">
+        <div v-else-if="error && events.length === 0" class="text-sm text-red-500 dark:text-red-400 text-center py-8">
           Failed to load logs.
         </div>
 
-        <div v-else-if="events.length === 0" class="text-[11px] text-gray-500 dark:text-gray-400 text-center py-8">
+        <div v-else-if="events.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
           No logs recorded yet.
         </div>
         
@@ -45,13 +45,13 @@
           <div v-for="evt in events" :key="evt.id" class="flex flex-col gap-1 border-l-2 pl-3 pb-1 relative" :class="borderColorClass(evt.type)">
             <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full border border-white dark:border-slate-900" :class="dotColorClass(evt.type)"></div>
             <div class="flex flex-wrap items-baseline justify-between gap-x-2">
-              <span class="text-[11px] font-bold tracking-widest uppercase" :class="titleColorClass(evt.type)">
+              <span class="text-xs font-bold tracking-widest uppercase" :class="titleColorClass(evt.type)">
                 {{ evt.metric }} {{ evt.type }}
               </span>
-              <span class="text-[9px] text-gray-400 dark:text-gray-500 font-mono" :title="new Date(evt.timestamp).toLocaleString()">{{ timeAgo(evt.timestamp) }}</span>
+              <span class="text-xs text-gray-400 dark:text-gray-500 font-mono" :title="new Date(evt.timestamp).toLocaleString()">{{ timeAgo(evt.timestamp) }}</span>
             </div>
-            <div class="text-[12px] font-mono text-gray-800 dark:text-gray-200 mt-1">Value: {{ evt.value }}</div>
-            <p class="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed">{{ evt.message }}</p>
+            <div class="text-sm font-mono text-gray-800 dark:text-gray-200 mt-1">Value: {{ evt.value }}</div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{{ evt.message }}</p>
           </div>
         </div>
       </section>
