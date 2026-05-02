@@ -30,7 +30,9 @@
 
         <div class="space-y-1">
           <h2 class="text-sm font-bold text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
-          <p class="text-[11px] text-gray-500 dark:text-gray-400">Set the start dates for your biological cycles to ensure accurate tracking.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4">
+            These dates are used to calculate crop and fish age, which directly influences the intelligent diagnosis and suggested actions.
+          </p>
         </div>
 
         <div class="space-y-4">
@@ -65,14 +67,6 @@
           </button>
         </div>
       </section>
-
-      <!-- Info Box -->
-      <div class="p-4 rounded-md bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 flex gap-3">
-        <InfoIcon class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-        <p class="text-[11px] leading-relaxed text-emerald-700 dark:text-emerald-400 font-medium">
-          The system uses these dates to calculate the "Age" of your plants and fish, which directly influences the intelligent diagnosis and suggested actions.
-        </p>
-      </div>
 
       <!-- Sensor Thresholds Section -->
       <section class="space-y-4">
@@ -123,7 +117,7 @@
 <script setup>
 import { ref, reactive, watch } from 'vue'
 import { useLifecycleConfig, useThresholds } from '~/composables/useSupabaseData'
-import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
+import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
 
 const colorMode = useColorMode()
 const { isDesktopLayout, toggleLayoutMode } = useLayoutMode()
