@@ -102,7 +102,7 @@
               </div>
             </div>
             <div class="space-y-1">
-              <label class="text-[9px] font-bold text-amber-600 tracking-tighter">Safety range</label>
+              <label class="text-[9px] font-bold text-emerald-600 tracking-tighter">Safety range</label>
               <div class="flex items-center gap-2">
                 <input v-model.number="t.min_warning" type="number" step="0.1" :placeholder="`e.g. ${t.min_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
                 <span class="text-gray-300">—</span>
