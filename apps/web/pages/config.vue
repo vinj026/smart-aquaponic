@@ -39,7 +39,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- Crop Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 block">Crop Planting Date</label>
+              <label class="text-[10px] font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Crop planting date</label>
               <input 
                 v-model="form.crop_start_date" 
                 type="date" 
@@ -49,7 +49,7 @@
 
             <!-- Fish Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 block">Fish Stocking Date</label>
+              <label class="text-[10px] font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Fish stocking date</label>
               <input 
                 v-model="form.fish_start_date" 
                 type="date" 
