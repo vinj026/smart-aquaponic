@@ -26,7 +26,15 @@
           <p class="text-[11px] text-gray-500 dark:text-gray-400">Chronological history of all system events.</p>
         </div>
 
-        <div v-if="events.length === 0" class="text-[11px] text-gray-500 dark:text-gray-400 text-center py-8">
+        <div v-if="loading && events.length === 0" class="text-[11px] text-gray-500 dark:text-gray-400 text-center py-8">
+          Loading logs...
+        </div>
+
+        <div v-else-if="error && events.length === 0" class="text-[11px] text-red-500 dark:text-red-400 text-center py-8">
+          Failed to load logs.
+        </div>
+
+        <div v-else-if="events.length === 0" class="text-[11px] text-gray-500 dark:text-gray-400 text-center py-8">
           No logs recorded yet.
         </div>
         
@@ -60,7 +68,7 @@ function toggleColorMode() {
 }
 
 // Fetch up to 50 events for the logs page
-const { events } = useSystemEvents(50)
+const { events, loading, error } = useSystemEvents(50)
 
 function borderColorClass(type) {
   if (type === 'danger') return 'border-red-400 dark:border-red-800'

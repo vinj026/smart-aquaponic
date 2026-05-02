@@ -20,7 +20,16 @@
 
       <!-- Alerts List -->
       <section class="space-y-4">
-        <div v-if="activeAlerts.length === 0" class="bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/30 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
+        <div v-if="loading && !latest" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
+          <p class="text-[11px] text-gray-500 dark:text-gray-400">Loading latest alerts...</p>
+        </div>
+
+        <div v-else-if="error && !latest" class="bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
+          <h2 class="text-sm font-bold text-red-700 dark:text-red-300 mb-1">Alerts Unavailable</h2>
+          <p class="text-[11px] text-red-600 dark:text-red-400">The latest sensor reading could not be loaded.</p>
+        </div>
+
+        <div v-else-if="activeAlerts.length === 0" class="bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/30 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
           <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/30 rounded-full flex items-center justify-center mb-3">
             <CheckCircleIcon class="w-5 h-5 text-emerald-500" />
           </div>
@@ -72,7 +81,7 @@ function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
-const { reading } = useLatestReading()
+const { reading, loading, error } = useLatestReading()
 const latest = computed(() => reading.value)
 
 const activeAlerts = computed(() => {

@@ -105,18 +105,26 @@ const chartBottom = 130 // moved up slightly to give X-axis labels more room
 const chartHeight = chartBottom - 10  // usable chart area
 
 // Dynamic bounds based on actual data with padding
+function getFallbackBounds() {
+  switch (props.parameter) {
+    case 'ph': return { min: 6.0, max: 8.0 }
+    case 'tds': return { min: 400, max: 800 }
+    case 'turbidity': return { min: 0, max: 15 }
+    case 'water_level': return { min: 30, max: 100 }
+    default: return { min: 0, max: 100 }
+  }
+}
+
 const bounds = computed(() => {
   const vals = values.value
-  if (vals.length < 2) {
-    // fallback hardcoded bounds
-    switch (props.parameter) {
-      case 'ph': return { min: 6.0, max: 8.0 }
-      case 'tds': return { min: 400, max: 800 }
-      case 'turbidity': return { min: 0, max: 15 }
-      case 'water_level': return { min: 30, max: 100 }
-      default: return { min: 0, max: 100 }
-    }
+  if (vals.length === 0) return getFallbackBounds()
+  if (vals.length === 1) {
+    const fallback = getFallbackBounds()
+    const single = vals[0]
+    const basePadding = Math.max((fallback.max - fallback.min) * 0.1, Math.abs(single) * 0.05, 1)
+    return { min: single - basePadding, max: single + basePadding }
   }
+
   const dataMin = Math.min(...vals)
   const dataMax = Math.max(...vals)
   const range = dataMax - dataMin || 1
@@ -139,7 +147,7 @@ const rows = computed(() => {
 })
 
 const values = computed(() => rows.value.map(r => Number(r?.[props.parameter])).filter(val => !isNaN(val)))
-const hasData = computed(() => values.value.length > 1)
+const hasData = computed(() => values.value.length > 0)
 
 const points = computed(() => {
   if (!hasData.value) return []
@@ -202,10 +210,15 @@ const yLabelX = computed(() => chartLeft - 4)
 // X-axis time labels (start, middle, end)
 const xAxisLabels = computed(() => {
   const pts = points.value
-  if (pts.length < 2) return []
+  if (pts.length === 0) return []
   const fmt = (row) => {
     if (!row?.timestamp) return ''
     return format(new Date(row.timestamp), 'HH:mm')
+  }
+  if (pts.length === 1) {
+    return [
+      { x: pts[0].x, text: fmt(pts[0].row), anchor: 'middle' },
+    ]
   }
   const first = pts[0]
   const mid = pts[Math.floor(pts.length / 2)]

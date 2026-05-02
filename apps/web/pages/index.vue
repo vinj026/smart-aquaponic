@@ -90,6 +90,12 @@
               </p>
             </div>
           </div>
+          <div v-else-if="latestError" class="px-4 py-4 rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 flex flex-col gap-2 shadow-sm min-h-[100px]">
+            <h2 class="text-[11px] font-bold uppercase tracking-widest text-red-600 dark:text-red-400">Live Data Unavailable</h2>
+            <p class="text-[12px] leading-relaxed text-red-700 dark:text-red-300">
+              The latest sensor reading could not be loaded. Realtime sync will retry automatically when the connection recovers.
+            </p>
+          </div>
           <!-- Skeleton Loader -->
           <div v-else class="px-4 py-4 rounded-md border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col gap-3 shadow-sm animate-pulse min-h-[100px]">
             <div class="flex items-start gap-3">
@@ -126,6 +132,9 @@
               label="Water Level" :value="latest?.water_level" unit="%" 
               :status="latest?.water_level_status" :status-text="statusLabel(latest?.water_level_status)"
             />
+          </div>
+          <div v-else-if="latestError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 p-4 text-[11px] text-red-700 dark:text-red-300 shadow-sm">
+            Sensor cards are unavailable because the latest reading request failed.
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
             <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md animate-pulse"></div>
@@ -198,7 +207,13 @@
           </div>
 
           <div class="h-64 w-full relative">
-            <ClientOnly>
+            <div v-if="historyError && history.length === 0" class="flex h-full items-center justify-center rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/40 dark:bg-red-950/10 px-4 text-center text-[11px] font-medium text-red-700 dark:text-red-300">
+              Historical data could not be loaded right now.
+            </div>
+            <div v-else-if="historyLoading && history.length === 0" class="flex h-full items-center justify-center text-[10px] text-gray-400 font-medium uppercase tracking-widest">
+              Loading chart data...
+            </div>
+            <ClientOnly v-else>
               <MinimalChart :history="history" :parameter="selected" />
             </ClientOnly>
           </div>
@@ -240,7 +255,13 @@
             <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">View All</NuxtLink>
           </div>
           <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
-            <div v-if="events.length === 0" class="p-8 text-center">
+            <div v-if="eventsLoading && events.length === 0" class="p-8 text-center">
+              <p class="text-[11px] text-gray-400 italic">Loading recent events...</p>
+            </div>
+            <div v-else-if="eventsError && events.length === 0" class="p-8 text-center">
+              <p class="text-[11px] text-red-500 italic">Recent activity could not be loaded.</p>
+            </div>
+            <div v-else-if="events.length === 0" class="p-8 text-center">
               <p class="text-[11px] text-gray-400 italic">No recent events logged</p>
             </div>
             <div v-else class="divide-y divide-gray-50 dark:divide-slate-800">
@@ -266,7 +287,7 @@ import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as
 import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
 import CompactSensorRow from '~/components/CompactSensorRow.vue'
 import MinimalChart from '~/components/MinimalChart.vue'
-import { formatDistanceToNow, format } from 'date-fns'
+import { format } from 'date-fns'
 
 const colorMode = useColorMode()
 function toggleColorMode() {
@@ -281,9 +302,9 @@ const selected = ref('turbidity')
 const now = ref(Date.now())
 
 // Supabase Composables
-const { reading: latest } = useLatestReading()
-const { history, loading: historyLoading } = useReadingHistory(selectedTime)
-const { events } = useSystemEvents(6)
+const { reading: latest, error: latestError } = useLatestReading()
+const { history, loading: historyLoading, error: historyError } = useReadingHistory(selectedTime)
+const { events, loading: eventsLoading, error: eventsError } = useSystemEvents(6)
 const { config } = useLifecycleConfig()
 
 // Constants
@@ -329,16 +350,20 @@ const systemHealthLabel = computed(() => {
   return 'Healthy'
 })
 
+function parseStoredDate(dateString) {
+  return new Date(`${dateString}T00:00:00`)
+}
+
 const cropAge = computed(() => {
   if (!config.value.crop_start_date) return 0
-  const start = new Date(config.value.crop_start_date)
+  const start = parseStoredDate(config.value.crop_start_date)
   const diffTime = now.value - start.getTime()
   return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)))
 })
 
 const fishAge = computed(() => {
   if (!config.value.fish_start_date) return 0
-  const start = new Date(config.value.fish_start_date)
+  const start = parseStoredDate(config.value.fish_start_date)
   const diffTime = now.value - start.getTime()
   return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)))
 })
@@ -453,28 +478,32 @@ function statusLabel(status) {
 async function exportCsv() {
   if (isExporting.value) return
   isExporting.value = true
-  await new Promise(r => setTimeout(r, 800))
 
-  const rows = history.value
-  if (!rows || rows.length === 0) return
+  try {
+    await new Promise(r => setTimeout(r, 800))
 
-  const headers = ['Timestamp', 'pH', 'TDS', 'Turbidity', 'Water Level', 'Status']
-  const csv = [
-    headers.join(','),
-    ...rows.map(r => [
-      new Date(r.timestamp).toISOString(),
-      r.ph, r.tds, r.turbidity, r.water_level, r.overall_status
-    ].join(','))
-  ].join('\n')
+    const rows = history.value
+    if (!rows || rows.length === 0) return
 
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.setAttribute('href', url)
-  a.setAttribute('download', `aquaguard-data-${Date.now()}.csv`)
-  a.click()
-  window.URL.revokeObjectURL(url)
-  isExporting.value = false
+    const headers = ['Timestamp', 'pH', 'TDS', 'Turbidity', 'Water Level', 'Status']
+    const csv = [
+      headers.join(','),
+      ...rows.map(r => [
+        new Date(r.timestamp).toISOString(),
+        r.ph, r.tds, r.turbidity, r.water_level, r.overall_status
+      ].join(','))
+    ].join('\n')
+
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.setAttribute('href', url)
+    a.setAttribute('download', `aquaguard-data-${Date.now()}.csv`)
+    a.click()
+    window.URL.revokeObjectURL(url)
+  } finally {
+    isExporting.value = false
+  }
 }
 
 const getEventTagClass = (type) => {

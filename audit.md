@@ -3,6 +3,10 @@
 Tanggal audit: 2026-05-03  
 Scope: aplikasi aktif di `apps/web` dengan backend data Supabase.
 
+## Status Update
+
+Semua temuan di dokumen ini sudah ditangani di working tree saat ini pada 2026-05-03. Rincian di bawah dipertahankan sebagai catatan audit historis atas bug yang ditemukan sebelum fixing pass dilakukan.
+
 ## Ringkasan
 
 Audit ini fokus ke bug fungsional dan risiko perilaku runtime, bukan sekadar cleanup atau style issue. Temuan di bawah diprioritaskan berdasarkan dampak ke user dan kemungkinan muncul di penggunaan nyata.

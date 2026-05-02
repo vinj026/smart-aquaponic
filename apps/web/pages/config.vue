@@ -21,6 +21,10 @@
 
       <!-- Config Form Card -->
       <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
+        <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
+          Failed to load lifecycle configuration.
+        </div>
+
         <div class="space-y-1">
           <h2 class="text-sm font-bold text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
           <p class="text-[11px] text-gray-500 dark:text-gray-400">Set the start dates for your biological cycles to ensure accurate tracking.</p>
@@ -51,10 +55,10 @@
         <div class="pt-4">
           <button 
             @click="handleSave" 
-            :disabled="saving"
+            :disabled="saving || configLoading"
             class="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold py-2.5 rounded-md text-xs uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
           >
-            {{ saving ? 'Saving Changes...' : 'Save Configuration' }}
+            {{ saving ? 'Saving Changes...' : configLoading ? 'Loading Configuration...' : 'Save Configuration' }}
           </button>
         </div>
       </section>
@@ -72,6 +76,14 @@
         <div class="flex items-center justify-between px-1">
           <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-500">Sensor Thresholds</h2>
           <span class="text-[9px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-500 rounded uppercase tracking-tighter">System Wide</span>
+        </div>
+
+        <div v-if="thresholdsError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
+          Failed to load sensor thresholds.
+        </div>
+
+        <div v-else-if="thresholdsLoading && thresholds.length === 0" class="rounded-md border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-4 text-[11px] text-gray-500 dark:text-gray-400 text-center">
+          Loading sensor thresholds...
         </div>
 
         <div v-for="t in thresholds" :key="t.id" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 shadow-sm space-y-4 transition-colors duration-300">
@@ -106,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useLifecycleConfig, useThresholds } from '~/composables/useSupabaseData'
 import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon } from 'lucide-vue-next'
 
@@ -115,7 +127,7 @@ function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 
-const { config, updateConfig } = useLifecycleConfig()
+const { config, loading: configLoading, error: configError, updateConfig } = useLifecycleConfig()
 const saving = ref(false)
 
 const form = reactive({
@@ -129,20 +141,23 @@ watch(config, (newVal) => {
   if (newVal.fish_start_date) form.fish_start_date = newVal.fish_start_date
 }, { immediate: true })
 
-const { thresholds, updateThreshold } = useThresholds()
+const { thresholds, loading: thresholdsLoading, error: thresholdsError, updateThreshold } = useThresholds()
 
 async function handleSave() {
   saving.value = true
-  const { error } = await updateConfig({
-    crop_start_date: form.crop_start_date,
-    fish_start_date: form.fish_start_date
-  })
-  
-  if (error) {
-    alert('Failed to save config: ' + error.message)
+
+  try {
+    const { error } = await updateConfig({
+      crop_start_date: form.crop_start_date,
+      fish_start_date: form.fish_start_date
+    })
+
+    if (error) {
+      alert('Failed to save config: ' + error.message)
+    }
+  } finally {
+    saving.value = false
   }
-  
-  saving.value = false
 }
 
 async function handleThresholdChange(t) {
