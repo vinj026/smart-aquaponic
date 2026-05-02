@@ -23,7 +23,7 @@
       </header>
 
       <!-- Config Form Card -->
-      <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
+      <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md px-6 pt-6 pb-4 space-y-4 shadow-sm transition-colors duration-300">
         <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
           Failed to load lifecycle configuration.
         </div>
@@ -57,7 +57,7 @@
           </div>
         </div>
 
-        <div class="pt-2 flex justify-end">
+        <div class="flex justify-end">
           <button 
             @click="handleSave" 
             :disabled="saving || configLoading"
