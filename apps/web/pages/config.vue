@@ -137,11 +137,11 @@ const form = reactive({
 
 // Sync form with config when loaded
 watch(config, (newVal) => {
-  if (newVal.crop_start_date) form.crop_start_date = newVal.crop_start_date
-  if (newVal.fish_start_date) form.fish_start_date = newVal.fish_start_date
+  form.crop_start_date = newVal.crop_start_date || ''
+  form.fish_start_date = newVal.fish_start_date || ''
 }, { immediate: true })
 
-const { thresholds, loading: thresholdsLoading, error: thresholdsError, updateThreshold } = useThresholds()
+const { thresholds, loading: thresholdsLoading, error: thresholdsError, updateThreshold, fetchThresholds } = useThresholds()
 
 async function handleSave() {
   saving.value = true
@@ -161,11 +161,21 @@ async function handleSave() {
 }
 
 async function handleThresholdChange(t) {
-  const { error } = await updateThreshold(t.id, {
+  const updates = {
     min_normal: t.min_normal,
     max_normal: t.max_normal,
     min_warning: t.min_warning,
     max_warning: t.max_warning
+  }
+
+  if (!Object.values(updates).every(Number.isFinite)) {
+    alert('Threshold values must be valid numbers.')
+    await fetchThresholds()
+    return
+  }
+
+  const { error } = await updateThreshold(t.id, {
+    ...updates
   })
   if (error) alert('Failed to update threshold: ' + error.message)
 }

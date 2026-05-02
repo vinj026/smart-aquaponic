@@ -33,6 +33,7 @@ async function fetchLatestReading() {
 
     if (error) {
         sharedLatestError.value = error
+        sharedLatestReading.value = null
         sharedLatestLoading.value = false
         return
     }
@@ -92,6 +93,7 @@ function startLatestSubscription() {
             }
 
             sharedLatestError.value = new Error(`Realtime connection status: ${status}`)
+            sharedLatestReading.value = null
             supabase.removeChannel(channel)
             scheduleLatestReconnect()
         }
@@ -140,8 +142,10 @@ export function useReadingHistory(minutesRef) {
     const loading = ref(false)
     const error = ref(null)
     let channel = null
+    let fetchRequestId = 0
 
     async function fetchHistory(minutes) {
+        const requestId = ++fetchRequestId
         loading.value = true
         error.value = null
         const startTime = new Date(Date.now() - minutes * 60 * 1000).toISOString()
@@ -152,11 +156,13 @@ export function useReadingHistory(minutesRef) {
             .order('timestamp', { ascending: false })
 
         if (queryError) {
+            if (requestId !== fetchRequestId) return
             error.value = queryError
             loading.value = false
             return
         }
 
+        if (requestId !== fetchRequestId) return
         history.value = (data || []).reverse().map(normalizeReading)
         loading.value = false
     }
@@ -221,11 +227,10 @@ export function useSystemEvents(limit = 5) {
         if (queryError) {
             error.value = queryError
             loading.value = false
-            return
+        } else {
+            events.value = data || []
+            loading.value = false
         }
-
-        events.value = data || []
-        loading.value = false
 
         channel = supabase
             .channel('sensor-events')
