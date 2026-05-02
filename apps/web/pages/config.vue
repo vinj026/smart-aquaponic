@@ -35,7 +35,7 @@
           </p>
         </div>
 
-        <div class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Crop Start Date -->
           <div class="space-y-2">
             <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 block">Crop Planting Date</label>
