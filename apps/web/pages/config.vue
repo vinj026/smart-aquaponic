@@ -57,13 +57,14 @@
           </div>
         </div>
 
-        <div class="pt-4">
+        <div class="pt-2 flex justify-end">
           <button 
             @click="handleSave" 
             :disabled="saving || configLoading"
-            class="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold py-2.5 rounded-md text-xs uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
+            class="inline-flex w-auto items-center justify-center rounded-md border border-gray-300 dark:border-slate-700 bg-transparent px-6 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
           >
-            {{ saving ? 'Saving Changes...' : configLoading ? 'Loading Configuration...' : 'Save Configuration' }}
+            <span v-if="saveSuccess">✓ Saved</span>
+            <span v-else>{{ saving ? 'Saving...' : configLoading ? 'Loading...' : 'Save configuration' }}</span>
           </button>
         </div>
       </section>
@@ -115,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onBeforeUnmount } from 'vue'
 import { useLifecycleConfig, useThresholds } from '~/composables/useSupabaseData'
 import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
 
@@ -127,6 +128,8 @@ function toggleColorMode() {
 
 const { config, loading: configLoading, error: configError, updateConfig } = useLifecycleConfig()
 const saving = ref(false)
+const saveSuccess = ref(false)
+let saveSuccessTimer = null
 
 const form = reactive({
   crop_start_date: '',
@@ -143,6 +146,7 @@ const { thresholds, loading: thresholdsLoading, error: thresholdsError, updateTh
 
 async function handleSave() {
   saving.value = true
+  saveSuccess.value = false
 
   try {
     const { error } = await updateConfig({
@@ -152,11 +156,22 @@ async function handleSave() {
 
     if (error) {
       alert('Failed to save config: ' + error.message)
+      return
     }
+
+    saveSuccess.value = true
+    if (saveSuccessTimer) clearTimeout(saveSuccessTimer)
+    saveSuccessTimer = setTimeout(() => {
+      saveSuccess.value = false
+    }, 2000)
   } finally {
     saving.value = false
   }
 }
+
+onBeforeUnmount(() => {
+  if (saveSuccessTimer) clearTimeout(saveSuccessTimer)
+})
 
 async function handleThresholdChange(t) {
   const updates = {
