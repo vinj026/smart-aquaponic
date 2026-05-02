@@ -29,7 +29,7 @@
         </div>
 
         <div class="space-y-1">
-          <h2 class="text-sm font-bold text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
+          <h2 class="text-base font-bold text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4">
             These dates are used to calculate crop and fish age, which directly influences the intelligent diagnosis and suggested actions.
           </p>
@@ -70,9 +70,9 @@
       </section>
 
       <!-- Sensor Thresholds Section -->
-      <section class="space-y-4">
+      <section class="space-y-4 border-t border-gray-200 dark:border-slate-800 pt-8 mt-8">
         <div class="space-y-1 px-1">
-          <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-500">Sensor Thresholds</h2>
+          <h2 class="text-base font-bold text-gray-900 dark:text-gray-100">Sensor Thresholds</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">
             These thresholds determine when sensor readings are flagged as warning or danger.
           </p>
