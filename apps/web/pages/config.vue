@@ -87,27 +87,29 @@
             Loading sensor thresholds...
           </div>
 
-          <div v-for="t in thresholds" :key="t.id" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 shadow-sm space-y-4 transition-colors duration-300">
-            <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2">
-              <span class="text-xs font-bold">{{ t.label }}</span>
-              <span class="text-[10px] font-mono text-gray-400">{{ t.unit }}</span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div class="space-y-1">
-                <label class="text-[9px] font-bold text-emerald-600 tracking-tighter">Normal range</label>
-                <div class="flex items-center gap-2">
-                  <input v-model.number="t.min_normal" type="number" step="0.1" :placeholder="`e.g. ${t.min_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
-                  <span class="text-gray-300">—</span>
-                  <input v-model.number="t.max_normal" type="number" step="0.1" :placeholder="`e.g. ${t.max_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
-                </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div v-for="t in thresholds" :key="t.id" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 shadow-sm space-y-4 transition-colors duration-300">
+              <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2">
+                <span class="text-xs font-bold">{{ t.label }}</span>
+                <span class="text-[10px] font-mono text-gray-400">{{ t.unit }}</span>
               </div>
-              <div class="space-y-1">
-                <label class="text-[9px] font-bold text-emerald-600 tracking-tighter">Safety range</label>
-                <div class="flex items-center gap-2">
-                  <input v-model.number="t.min_warning" type="number" step="0.1" :placeholder="`e.g. ${t.min_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
-                  <span class="text-gray-300">—</span>
-                  <input v-model.number="t.max_warning" type="number" step="0.1" :placeholder="`e.g. ${t.max_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-emerald-600 tracking-tighter">Normal range</label>
+                  <div class="flex items-center gap-2">
+                    <input v-model.number="t.min_normal" type="number" step="0.1" :placeholder="`e.g. ${t.min_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                    <span class="text-gray-300">—</span>
+                    <input v-model.number="t.max_normal" type="number" step="0.1" :placeholder="`e.g. ${t.max_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-emerald-600 tracking-tighter">Safety range</label>
+                  <div class="flex items-center gap-2">
+                    <input v-model.number="t.min_warning" type="number" step="0.1" :placeholder="`e.g. ${t.min_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                    <span class="text-gray-300">—</span>
+                    <input v-model.number="t.max_warning" type="number" step="0.1" :placeholder="`e.g. ${t.max_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                  </div>
                 </div>
               </div>
             </div>
