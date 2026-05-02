@@ -42,15 +42,15 @@ const props = defineProps({
 })
 
 const cardClasses = computed(() => {
-  if (props.status === 'danger') return 'bg-red-50/30 dark:bg-red-950/20 border-red-200 dark:border-red-900/50'
-  if (props.status === 'warning') return 'bg-yellow-50/30 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900/50'
+  if (props.status === 'danger') return 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/50'
+  if (props.status === 'warning') return 'bg-amber-50 dark:bg-yellow-950/20 border-amber-200 dark:border-yellow-900/50'
   return 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800'
 })
 
 const statusClasses = computed(() => {
-  if (props.status === 'danger') return 'bg-red-100/50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200/50 dark:border-red-800/50'
-  if (props.status === 'warning') return 'bg-yellow-100/50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200/50 dark:border-yellow-800/50'
-  if (props.status === 'normal') return 'bg-emerald-100/50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/50'
-  return 'bg-gray-100/50 dark:bg-slate-800/50 text-gray-500 dark:text-gray-400 border border-gray-200/50 dark:border-slate-700/50'
+  if (props.status === 'danger') return 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800/50'
+  if (props.status === 'warning') return 'bg-amber-100 dark:bg-yellow-900/40 text-amber-800 dark:text-yellow-400 border border-amber-200 dark:border-yellow-800/50'
+  if (props.status === 'normal') return 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50'
+  return 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-slate-700/50'
 })
 </script>

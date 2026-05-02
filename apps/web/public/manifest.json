@@ -1,0 +1,17 @@
+{
+  "name": "Aquaguard IoT Platform",
+  "short_name": "Aquaguard",
+  "description": "Smart Aquaponics Monitoring & Automation Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

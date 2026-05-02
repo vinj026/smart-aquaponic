@@ -188,3 +188,39 @@ export function useLifecycleConfig() {
 
     return { config, loading, updateConfig, fetchConfig }
 }
+
+/**
+ * Manages sensor thresholds.
+ */
+export function useThresholds() {
+    const thresholds = ref([])
+    const loading = ref(false)
+
+    async function fetchThresholds() {
+        loading.value = true
+        const { data } = await supabase
+            .from('system_thresholds')
+            .select('*')
+            .order('id')
+        
+        if (data) thresholds.value = data
+        loading.value = false
+    }
+
+    async function updateThreshold(id, updates) {
+        const { error } = await supabase
+            .from('system_thresholds')
+            .update(updates)
+            .eq('id', id)
+        
+        if (!error) {
+            const idx = thresholds.value.findIndex(t => t.id === id)
+            if (idx !== -1) thresholds.value[idx] = { ...thresholds.value[idx], ...updates }
+        }
+        return { error }
+    }
+
+    onMounted(fetchThresholds)
+
+    return { thresholds, loading, updateThreshold, fetchThresholds }
+}

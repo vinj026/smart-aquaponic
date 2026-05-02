@@ -66,14 +66,48 @@
           The system uses these dates to calculate the "Age" of your plants and fish, which directly influences the intelligent diagnosis and suggested actions.
         </p>
       </div>
+
+      <!-- Sensor Thresholds Section -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between px-1">
+          <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-500">Sensor Thresholds</h2>
+          <span class="text-[9px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-500 rounded uppercase tracking-tighter">System Wide</span>
+        </div>
+
+        <div v-for="t in thresholds" :key="t.id" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 shadow-sm space-y-4 transition-colors duration-300">
+          <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2">
+            <span class="text-xs font-bold">{{ t.label }}</span>
+            <span class="text-[10px] font-mono text-gray-400">{{ t.unit }}</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-emerald-600 uppercase tracking-tighter">Normal Range</label>
+              <div class="flex items-center gap-2">
+                <input v-model.number="t.min_normal" type="number" step="0.1" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                <span class="text-gray-300">—</span>
+                <input v-model.number="t.max_normal" type="number" step="0.1" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+              </div>
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-amber-600 uppercase tracking-tighter">Safety (Warning) Range</label>
+              <div class="flex items-center gap-2">
+                <input v-model.number="t.min_warning" type="number" step="0.1" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+                <span class="text-gray-300">—</span>
+                <input v-model.number="t.max_warning" type="number" step="0.1" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
   </main>
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
-import { useLifecycleConfig } from '~/composables/useSupabaseData'
+import { ref, reactive, watch, onMounted } from 'vue'
+import { useLifecycleConfig, useThresholds } from '~/composables/useSupabaseData'
 import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, Info as InfoIcon } from 'lucide-vue-next'
 
 const colorMode = useColorMode()
@@ -95,6 +129,8 @@ watch(config, (newVal) => {
   if (newVal.fish_start_date) form.fish_start_date = newVal.fish_start_date
 }, { immediate: true })
 
+const { thresholds, updateThreshold } = useThresholds()
+
 async function handleSave() {
   saving.value = true
   const { error } = await updateConfig({
@@ -104,11 +140,18 @@ async function handleSave() {
   
   if (error) {
     alert('Failed to save config: ' + error.message)
-  } else {
-    // Show success state (could use a toast later)
-    setTimeout(() => {
-      saving.value = false
-    }, 500)
   }
+  
+  saving.value = false
+}
+
+async function handleThresholdChange(t) {
+  const { error } = await updateThreshold(t.id, {
+    min_normal: t.min_normal,
+    max_normal: t.max_normal,
+    min_warning: t.min_warning,
+    max_warning: t.max_warning
+  })
+  if (error) alert('Failed to update threshold: ' + error.message)
 }
 </script>
