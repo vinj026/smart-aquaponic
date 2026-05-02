@@ -10,7 +10,7 @@
           <NuxtLink to="/" class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-[11px] font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">System Config</h1>
+          <h1 class="text-xl font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">System Config</h1>
         </div>
         <div class="flex items-center gap-3">
           <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
@@ -25,12 +25,12 @@
       <div class="space-y-6">
         <!-- Config Form Card -->
         <section class="space-y-4 border-b border-gray-200 dark:border-slate-800 pb-6">
-          <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
+          <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">
             Failed to load lifecycle configuration.
           </div>
 
           <div class="space-y-1">
-            <h2 class="text-base font-bold text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
+            <h2 class="text-base font-medium text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4">
               These dates are used to calculate crop and fish age, which directly influences the intelligent diagnosis and suggested actions.
             </p>
@@ -39,7 +39,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- Crop Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Crop planting date</label>
+              <label class="text-xs font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Crop planting date</label>
               <input 
                 v-model="form.crop_start_date" 
                 type="date" 
@@ -49,7 +49,7 @@
 
             <!-- Fish Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Fish stocking date</label>
+              <label class="text-xs font-bold tracking-widest text-gray-400 dark:text-gray-500 block">Fish stocking date</label>
               <input 
                 v-model="form.fish_start_date" 
                 type="date" 
@@ -73,17 +73,17 @@
         <!-- Sensor Thresholds Section -->
         <section class="space-y-4">
           <div class="space-y-1 px-1">
-            <h2 class="text-base font-bold text-gray-900 dark:text-gray-100">Sensor Thresholds</h2>
+            <h2 class="text-base font-medium text-gray-900 dark:text-gray-100">Sensor Thresholds</h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
               These thresholds determine when sensor readings are flagged as warning or danger.
             </p>
           </div>
 
-          <div v-if="thresholdsError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-[11px] text-red-700 dark:text-red-300">
+          <div v-if="thresholdsError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">
             Failed to load sensor thresholds.
           </div>
 
-          <div v-else-if="thresholdsLoading && thresholds.length === 0" class="rounded-md border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-4 text-[11px] text-gray-500 dark:text-gray-400 text-center">
+          <div v-else-if="thresholdsLoading && thresholds.length === 0" class="rounded-md border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-4 text-sm text-gray-500 dark:text-gray-400 text-center">
             Loading sensor thresholds...
           </div>
 
@@ -91,12 +91,12 @@
             <div v-for="t in thresholds" :key="t.id" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 shadow-sm space-y-4 transition-colors duration-300">
               <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2">
                 <span class="text-xs font-bold">{{ t.label }}</span>
-                <span class="text-[10px] font-mono text-gray-400">{{ t.unit }}</span>
+                <span class="text-xs font-mono text-gray-400">{{ t.unit }}</span>
               </div>
 
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-1">
-                  <label class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 tracking-tighter">Normal range</label>
+                  <label class="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-tighter">Normal range</label>
                   <div class="flex items-center gap-2">
                     <input v-model.number="t.min_normal" type="number" step="0.1" :placeholder="`e.g. ${t.min_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
                     <span class="text-gray-300">—</span>
@@ -104,7 +104,7 @@
                   </div>
                 </div>
                 <div class="space-y-1">
-                  <label class="text-[9px] font-bold text-gray-500 dark:text-gray-400 tracking-tighter">Safety range</label>
+                  <label class="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-tighter">Safety range</label>
                   <div class="flex items-center gap-2">
                     <input v-model.number="t.min_warning" type="number" step="0.1" :placeholder="`e.g. ${t.min_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-xs font-mono" />
                     <span class="text-gray-300">—</span>
