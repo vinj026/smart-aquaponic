@@ -1,12 +1,12 @@
 <template>
   <div class="w-full h-full relative group cursor-crosshair" :key="parameter" ref="containerRef" @mousemove="onMouseMove" @mouseleave="onMouseLeave" @touchstart="onTouch" @touchmove="onTouch">
-    <div v-if="!hasData" class="flex items-center justify-center h-full text-[10px] text-gray-400 font-medium uppercase tracking-widest">Loading data...</div>
+    <div v-if="!hasData" class="flex items-center justify-center h-full text-sm text-gray-400 font-medium uppercase tracking-widest">Loading data...</div>
     
     <template v-else>
       <!-- Y-Axis Labels (HTML Overlay) -->
       <div class="absolute inset-y-0 left-0 flex flex-col justify-between pointer-events-none z-10 py-2" :style="{ width: `${chartLeft}px` }">
         <span v-for="(label, i) in yAxisLabels" :key="'y'+i" 
-          class="text-[10px] font-mono font-bold text-gray-500 dark:text-slate-400 text-right pr-1.5 leading-none"
+          class="text-xs font-mono font-bold text-gray-500 dark:text-slate-400 text-right pr-1.5 leading-none"
           :style="{ position: 'absolute', top: `${(label.y / 150) * 100}%`, right: '4px', transform: 'translateY(-50%)' }">
           {{ label.text }}
         </span>
@@ -43,7 +43,7 @@
       <!-- X-Axis Labels (HTML Overlay) -->
       <div class="absolute bottom-0 left-0 right-0 h-4 pointer-events-none z-10" :style="{ left: `${chartLeft}px` }">
         <span v-for="(tl, i) in xAxisLabels" :key="'x'+i"
-          class="absolute text-[10px] font-mono font-bold text-gray-500 dark:text-slate-400 bottom-0"
+          class="absolute text-xs font-mono font-bold text-gray-500 dark:text-slate-400 bottom-0"
           :style="{ left: `${((tl.x - chartLeft) / (width - chartLeft)) * 100}%`, transform: tl.anchor === 'middle' ? 'translateX(-50%)' : tl.anchor === 'end' ? 'translateX(-100%)' : 'none' }">
           {{ tl.text }}
         </span>
@@ -68,8 +68,8 @@
       <div v-if="hoverIndex !== null && hoverPoint"
            class="absolute pointer-events-none transform -translate-x-1/2 -translate-y-[calc(100%+8px)] bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-slate-700 shadow-sm rounded px-2 py-1 z-50 flex flex-col items-center min-w-max"
            :style="{ left: `${((hoverPoint.x - chartLeft) / (width - chartLeft)) * (100 - (chartLeft/width*100)) + (chartLeft/width*100)}%`, top: `${(hoverPoint.y / 150) * 100}%` }">
-        <span class="text-[11px] font-bold tracking-tight">{{ hoverValueFormatted }}<span class="text-[9px] font-medium opacity-50 ml-0.5">{{ unit }}</span></span>
-        <span class="text-[8px] font-medium opacity-50">{{ hoverTimeFormatted }}</span>
+        <span class="text-sm font-bold tracking-tight">{{ hoverValueFormatted }}<span class="text-xs font-medium opacity-50 ml-0.5">{{ unit }}</span></span>
+        <span class="text-xs font-medium opacity-50">{{ hoverTimeFormatted }}</span>
       </div>
     </template>
   </div>
