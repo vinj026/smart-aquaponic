@@ -440,7 +440,7 @@ const insightText = computed(() => {
       : `TDS turun ke ${formatSensorValue(l.tds, 0)} ppm - di bawah batas aman (300 ppm). Nutrisi rendah dapat memperlambat pertumbuhan tanaman.`
   }
   if (l.turbidity_status !== 'normal') return `Kekeruhan air naik ke ${formatSensorValue(l.turbidity, 1)} NTU - di atas batas aman (5 NTU). Padatan tersuspensi dapat menyumbat filter dan menandakan limbah berlebih.`
-  if (l.water_level_status !== 'normal') return `Volume air turun ke ${formatSensorValue(l.water_level, 0)}% - di bawah batas aman (70%). Pompa berisiko berjalan kering dan sirkulasi sistem bisa terganggu.`
+  if (l.water_level_status !== 'normal') return `Volume air turun ke ${formatSensorValue(l.water_level, 0)}% - di bawah batas aman (70%). Sirkulasi sistem bisa terganggu, segera tambahkan air.`
   
   return 'Semua parameter akuatik berada dalam rentang optimal untuk ekosistem yang seimbang.'
 })
