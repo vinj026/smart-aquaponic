@@ -9,12 +9,12 @@
         <div v-if="$slots.icon" class="text-gray-400 w-3.5 h-3.5 flex items-center justify-center">
           <slot name="icon" />
         </div>
-        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">{{ label }}</span>
+        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ label }}</span>
       </div>
 
       <div 
         v-if="statusText" 
-        class="text-xs px-1.5 py-0.5 rounded font-bold uppercase tracking-wide"
+        class="text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide"
         :class="statusClasses"
       >
         {{ statusText }}
@@ -23,11 +23,11 @@
 
     <!-- Bottom: Value & Unit -->
     <div class="flex items-baseline gap-1 mt-1">
-      <span class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 tabular-nums tracking-tight leading-none">
+      <span class="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 tabular-nums tracking-tight leading-none">
         <template v-if="value == null">—</template>
         <template v-else>{{ value }}</template>
       </span>
-      <span v-if="unit" class="text-xs font-medium text-gray-400">{{ unit }}</span>
+      <span v-if="unit" class="text-[10px] font-medium text-gray-400">{{ unit }}</span>
     </div>
   </div>
 </template>

@@ -78,7 +78,7 @@ const statusClass = computed(() => {
 .metric-label {
   margin: 0;
   color: var(--color-ink-secondary);
-  font-size: var(--type-caption-size);
+  font-size: 10px;
   font-weight: 500;
   line-height: var(--type-caption-line);
   letter-spacing: 0.5px;
@@ -95,7 +95,7 @@ const statusClass = computed(() => {
 
 .metric-value {
   color: var(--color-ink);
-  font-size: 44px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -1px;
@@ -104,7 +104,7 @@ const statusClass = computed(() => {
 
 .metric-unit {
   color: var(--color-ink-tertiary);
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 500;
 }
 
@@ -114,7 +114,7 @@ const statusClass = computed(() => {
   border-radius: var(--radius-pill);
   color: var(--color-ink-secondary);
   background: var(--color-surface, #f9fafb);
-  font-size: var(--type-footnote-size);
+  font-size: 10px;
   font-weight: 500;
   line-height: 1.2;
 }

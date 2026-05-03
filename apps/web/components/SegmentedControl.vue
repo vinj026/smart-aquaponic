@@ -48,7 +48,7 @@ defineEmits(['update:modelValue'])
   color: var(--color-ink-tertiary);
   background: transparent;
   cursor: pointer;
-  font-size: var(--type-body-size);
+  font-size: 12px;
   font-weight: 400;
   line-height: var(--type-body-line);
   letter-spacing: var(--type-body-tracking);

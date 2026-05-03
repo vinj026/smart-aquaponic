@@ -66,7 +66,7 @@ const normalizedProgress = computed(() => {
 .info-title {
   margin-top: var(--space-xxs);
   color: var(--color-ink);
-  font-size: 34px;
+  font-size: 28px;
   line-height: 1;
   letter-spacing: -0.5px;
 }

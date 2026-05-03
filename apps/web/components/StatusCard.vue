@@ -1,14 +1,14 @@
 <template>
   <div class="rounded-xl border p-4 shadow-sm" :class="cardClass">
-    <div class="text-[11px] font-medium text-slate-600">
+    <div class="text-[10px] font-medium text-slate-600">
       {{ title }}
     </div>
 
-    <div class="mt-3 text-xl font-semibold text-slate-900">
+    <div class="mt-3 text-lg md:text-xl font-semibold text-slate-900">
       <span v-if="value == null">—</span>
       <template v-else>
         {{ value }}
-        <span v-if="unit" class="ml-1 text-xs font-medium text-slate-600">{{ unit }}</span>
+        <span v-if="unit" class="ml-1 text-[10px] font-medium text-slate-600">{{ unit }}</span>
       </template>
     </div>
 
@@ -57,4 +57,3 @@ const cardClass = computed(() => theme.value.card)
 const badgeClass = computed(() => theme.value.badge)
 const dotClass = computed(() => theme.value.dot)
 </script>
-

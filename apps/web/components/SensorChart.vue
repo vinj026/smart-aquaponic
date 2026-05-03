@@ -231,7 +231,7 @@ function formatTime(ts) {
 
 .axis-labels {
   fill: var(--color-ink-quaternary);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
 }
 
