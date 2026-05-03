@@ -391,7 +391,7 @@ const alertClasses = computed(() => {
 
 const alertIconBgClass = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-100/50 text-red-600'
+  if (s === 'danger') return 'bg-red-100/50 text-red-500'
   if (s === 'warning') return 'bg-yellow-100/50 text-yellow-600'
   return 'bg-emerald-100/50 text-emerald-600'
 })
