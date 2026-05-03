@@ -143,24 +143,24 @@
 
         <!-- Lifecycle (Mobile Only - between sensors and chart) -->
         <section v-if="!isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
-          <div class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between">
-               <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Crop Age</span>
-               <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none">{{ cropLifecycle }}</span>
+          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex items-center justify-between gap-1">
+               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="text-[8px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
-          <div class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between">
-               <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Fish Age</span>
-               <span class="text-[9px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none">{{ fishLifecycle }}</span>
+          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex items-center justify-between gap-1">
+               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="text-[8px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
         </section>
@@ -226,24 +226,24 @@
 
         <!-- Lifecycle Information Grid (Desktop Only) -->
         <section v-if="isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
-          <div class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between">
-               <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Crop Age</span>
-               <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none">{{ cropLifecycle }}</span>
+          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex items-center justify-between gap-1">
+               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="text-[8px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
-          <div class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between">
-               <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide">Fish Age</span>
-               <span class="text-[9px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none">{{ fishLifecycle }}</span>
+          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex items-center justify-between gap-1">
+               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="text-[8px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
         </section>
