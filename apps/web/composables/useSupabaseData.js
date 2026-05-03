@@ -33,7 +33,6 @@ async function fetchLatestReading() {
 
     if (error) {
         sharedLatestError.value = error
-        sharedLatestReading.value = null
         sharedLatestLoading.value = false
         return
     }
@@ -93,7 +92,6 @@ function startLatestSubscription() {
             }
 
             sharedLatestError.value = new Error(`Realtime connection status: ${status}`)
-            sharedLatestReading.value = null
             supabase.removeChannel(channel)
             scheduleLatestReconnect()
         }
@@ -142,6 +140,7 @@ export function useReadingHistory(minutesRef) {
     const loading = ref(false)
     const error = ref(null)
     let channel = null
+    let reconnectTimer = null
     let fetchRequestId = 0
 
     async function fetchHistory(minutes) {
@@ -151,7 +150,7 @@ export function useReadingHistory(minutesRef) {
         const startTime = new Date(Date.now() - minutes * 60 * 1000).toISOString()
         const { data, error: queryError } = await supabase
             .from('sensor_readings')
-            .select('*')
+            .select('timestamp,ph,tds,turbidity,water_level,overall_status')
             .gte('timestamp', startTime)
             .order('timestamp', { ascending: false })
 
@@ -167,11 +166,28 @@ export function useReadingHistory(minutesRef) {
         loading.value = false
     }
 
-    onMounted(() => {
-        // Initial fetch
-        fetchHistory(minutesRef.value)
+    function clearReconnectTimer() {
+        if (reconnectTimer) {
+            clearTimeout(reconnectTimer)
+            reconnectTimer = null
+        }
+    }
 
-        // Subscribe to new INSERTs
+    function scheduleReconnect() {
+        if (reconnectTimer || channel) return
+
+        reconnectTimer = setTimeout(async () => {
+            reconnectTimer = null
+            if (channel) return
+
+            await fetchHistory(minutesRef.value)
+            startSubscription()
+        }, 1500)
+    }
+
+    function startSubscription() {
+        if (channel) return
+
         channel = supabase
             .channel('sensor-readings-history')
             .on(
@@ -185,10 +201,27 @@ export function useReadingHistory(minutesRef) {
                 }
             )
             .subscribe((status) => {
-                if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                if (status === 'SUBSCRIBED') {
+                    error.value = null
+                    return
+                }
+
+                if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
                     error.value = new Error(`History realtime status: ${status}`)
+                    const failedChannel = channel
+                    channel = null
+                    if (failedChannel) supabase.removeChannel(failedChannel)
+                    scheduleReconnect()
                 }
             })
+    }
+
+    onMounted(() => {
+        // Initial fetch
+        fetchHistory(minutesRef.value)
+
+        // Subscribe to new INSERTs
+        startSubscription()
     })
 
     // Watch for range changes
@@ -197,8 +230,10 @@ export function useReadingHistory(minutesRef) {
     })
 
     onBeforeUnmount(() => {
+        clearReconnectTimer()
         if (channel) {
             supabase.removeChannel(channel)
+            channel = null
         }
     })
 
@@ -213,8 +248,9 @@ export function useSystemEvents(limit = 5) {
     const loading = ref(false)
     const error = ref(null)
     let channel = null
+    let reconnectTimer = null
 
-    onMounted(async () => {
+    async function fetchEvents() {
         loading.value = true
         error.value = null
 
@@ -231,6 +267,29 @@ export function useSystemEvents(limit = 5) {
             events.value = data || []
             loading.value = false
         }
+    }
+
+    function clearReconnectTimer() {
+        if (reconnectTimer) {
+            clearTimeout(reconnectTimer)
+            reconnectTimer = null
+        }
+    }
+
+    function scheduleReconnect() {
+        if (reconnectTimer || channel) return
+
+        reconnectTimer = setTimeout(async () => {
+            reconnectTimer = null
+            if (channel) return
+
+            await fetchEvents()
+            startSubscription()
+        }, 1500)
+    }
+
+    function startSubscription() {
+        if (channel) return
 
         channel = supabase
             .channel('sensor-events')
@@ -243,14 +302,32 @@ export function useSystemEvents(limit = 5) {
                 }
             )
             .subscribe((status) => {
-                if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                if (status === 'SUBSCRIBED') {
+                    error.value = null
+                    return
+                }
+
+                if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
                     error.value = new Error(`Event realtime status: ${status}`)
+                    const failedChannel = channel
+                    channel = null
+                    if (failedChannel) supabase.removeChannel(failedChannel)
+                    scheduleReconnect()
                 }
             })
+    }
+
+    onMounted(async () => {
+        await fetchEvents()
+        startSubscription()
     })
 
     onBeforeUnmount(() => {
-        if (channel) supabase.removeChannel(channel)
+        clearReconnectTimer()
+        if (channel) {
+            supabase.removeChannel(channel)
+            channel = null
+        }
     })
 
     return { events, loading, error }
@@ -290,7 +367,7 @@ export function useLifecycleConfig() {
         const { error: updateError } = await supabase
             .from('lifecycle_config')
             .upsert({ 
-                id: config.value.id || 1, 
+                id: config.value.id ?? 1,
                 ...newConfig, 
                 updated_at: new Date().toISOString() 
             })

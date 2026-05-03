@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full relative group cursor-crosshair" :key="parameter" ref="containerRef" @mousemove="onMouseMove" @mouseleave="onMouseLeave" @touchstart="onTouch" @touchmove="onTouch">
-    <div v-if="!hasData" class="flex items-center justify-center h-full text-xs text-gray-400 font-medium uppercase tracking-widest">Loading data...</div>
+    <div v-if="!hasData" class="flex items-center justify-center h-full text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest">Loading data...</div>
     
     <template v-else>
       <!-- Y-Axis Labels (HTML Overlay) -->

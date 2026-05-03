@@ -1,21 +1,21 @@
 <template>
   <main class="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-sans relative overflow-x-hidden transition-colors duration-300">
-    <div class="fixed inset-0 pointer-events-none opacity-20 dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
+    <div class="fixed inset-0 pointer-events-none opacity-[0.06] dark:opacity-[0.04]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
 
     <div class="mx-auto relative z-10 px-4 py-8 space-y-6 transition-all duration-500" :class="isDesktopLayout ? 'max-w-4xl' : 'max-w-md'">
       <!-- Header -->
-      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
+      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
-          <NuxtLink to="/" class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+          <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
           <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Active Alerts</h1>
         </div>
         <div class="flex items-center gap-3">
-          <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+          <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
             <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
           </button>
-          <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1">
+          <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
             <component :is="colorMode?.value === 'dark' ? SunIcon : MoonIcon" class="w-3.5 h-3.5" />
           </button>
         </div>
@@ -23,7 +23,7 @@
 
       <!-- Alerts List -->
       <section class="space-y-4">
-        <div v-if="loading && !latest" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
+        <div v-if="loading && !latest" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
           <p class="text-xs text-gray-500 dark:text-gray-400">Loading latest alerts...</p>
         </div>
 
@@ -47,7 +47,7 @@
           <div class="flex items-center gap-2 mb-3">
             <AlertTriangleIcon v-if="alert.severity === 'danger'" class="w-4 h-4 text-red-500" />
             <AlertCircleIcon v-else class="w-4 h-4 text-amber-500" />
-            <span class="text-[10px] font-bold uppercase tracking-widest" :class="alert.severity === 'danger' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'">
+            <span class="text-[10px] font-bold uppercase tracking-widest" :class="alert.severity === 'danger' ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400'">
               {{ alert.title }}
             </span>
             <span class="ml-auto text-[10px] px-2 py-0.5 rounded font-mono font-bold" :class="alert.severity === 'danger' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'">
@@ -57,10 +57,10 @@
 
           <div class="space-y-3">
             <div>
-              <div class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider mb-0.5">Diagnosis</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider mb-0.5">Diagnosis</div>
               <p class="text-xs text-gray-800 dark:text-gray-200 leading-snug">{{ alert.diagnosis }}</p>
             </div>
-            <div class="bg-gray-50 dark:bg-slate-800/50 rounded p-3 border border-gray-100 dark:border-slate-800">
+            <div class="bg-gray-50 dark:bg-slate-800/50 rounded p-3 border border-gray-100 dark:border-slate-700">
               <div class="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
                 <ToolIcon class="w-3 h-3" /> Action Required
               </div>

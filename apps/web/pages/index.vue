@@ -1,12 +1,12 @@
 <template>
   <main class="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-sans relative overflow-x-hidden transition-colors duration-300">
     <!-- Subtle dot grid background for technical depth -->
-    <div class="fixed inset-0 pointer-events-none opacity-20 dark:opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
+    <div class="fixed inset-0 pointer-events-none opacity-[0.06] dark:opacity-[0.04]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 16px 16px;"></div>
     
     <div class="mx-auto relative z-10 px-4 py-8 space-y-6 transition-all duration-500" :class="isDesktopLayout ? 'max-w-4xl' : 'max-w-md'">
       
       <!-- Compact Header -->
-      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
+      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-full">
             <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
@@ -15,30 +15,30 @@
           <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3 tracking-[0.2em]">Aquaguard IoT</h1>
         </div>
         <div class="flex items-center gap-3">
-          <div class="text-[10px] text-gray-400 dark:text-gray-500 font-medium hidden sm:block">Updated {{ timeAgoText }}</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:block">Updated {{ timeAgoText }}</div>
           <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
-            <NuxtLink to="/alerts" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 relative" title="Alerts">
+            <NuxtLink to="/alerts" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" title="Alerts">
               <BellIcon class="w-3.5 h-3.5" />
               <span v-if="systemHealthLabel !== 'Healthy'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
             </NuxtLink>
-            <NuxtLink to="/logs" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Logs">
+            <NuxtLink to="/logs" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Logs">
               <ActivityIcon class="w-3.5 h-3.5" />
             </NuxtLink>
-            <NuxtLink to="/config" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" title="Settings">
+            <NuxtLink to="/config" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Settings">
               <SettingsIcon class="w-3.5 h-3.5" />
             </NuxtLink>
             <button 
               @click="exportCsv" 
-              class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 relative" 
+              class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" 
               :disabled="isExporting"
               title="Export CSV" 
             >
               <DownloadIcon class="w-3.5 h-3.5" :class="{ 'animate-bounce opacity-50': isExporting }" />
             </button>
-            <button @click="toggleLayoutMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+            <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
               <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
             </button>
-            <button @click="toggleColorMode" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors p-1">
+            <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
               <component :is="colorMode.value === 'dark' ? SunIcon : MoonIcon" class="w-3.5 h-3.5" />
             </button>
           </div>
@@ -77,8 +77,8 @@
             
             <!-- Suggested Action (Only for non-normal) -->
             <div v-if="latest.overall_status !== 'normal'" 
-                 class="ml-10 rounded-md border border-white/10 bg-white/60 dark:bg-slate-950/30 px-3 py-2">
-              <p class="text-xs font-medium flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                 class="ml-10 rounded-md border border-gray-200/60 dark:border-slate-700/40 bg-white/80 dark:bg-slate-800/60 px-3 py-2">
+              <p class="text-xs font-medium flex items-center gap-2 text-gray-600 dark:text-gray-300">
                 <svg class="w-3 h-3 opacity-80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414l2.543 2.543 6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
@@ -108,8 +108,8 @@
         <!-- Real-time Sensors -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Live Sensors</h2>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-500 rounded uppercase tracking-tighter">Realtime</span>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Live Sensors</h2>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 rounded uppercase tracking-tighter">Realtime</span>
           </div>
           <div v-if="latest" class="grid grid-cols-2 gap-3">
             <CompactSensorRow 
@@ -133,46 +133,46 @@
             Sensor cards are unavailable because the latest reading request failed.
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
-            <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md animate-pulse"></div>
+            <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md animate-pulse"></div>
           </div>
         </section>
 
         <!-- Lifecycle (Mobile Only - between sensors and chart) -->
         <section v-if="!isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
-          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
-               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
-               <span class="text-[8px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
+               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
-             <div class="flex items-baseline gap-1 mt-0.5">
+             <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
-          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
-               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
-               <span class="text-[8px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
+               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="text-[10px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
-             <div class="flex items-baseline gap-1 mt-0.5">
+             <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
         </section>
 
         <!-- Historical Trends Section -->
-        <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
+        <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
           <div class="flex items-center justify-between">
             <div class="space-y-1">
-              <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Historical Trends</h2>
+              <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Historical Trends</h2>
               <div class="flex items-center gap-2">
                 <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                <span class="text-[10px] font-medium text-gray-400">Realtime sync active</span>
+                <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400">Realtime sync active</span>
               </div>
             </div>
             <div class="flex items-center gap-1.5 bg-gray-50 dark:bg-slate-800/50 px-2 py-1 rounded border border-gray-100 dark:border-slate-700/50">
-              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Trend:</span>
+              <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tighter">Trend:</span>
               <span class="text-[10px] font-bold uppercase tracking-tight flex items-center gap-1" :class="trendColor">
                 <svg v-if="trendDirection === 'up'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -206,7 +206,7 @@
             <div v-if="historyError && history.length === 0" class="flex h-full items-center justify-center rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/40 dark:bg-red-950/10 px-4 text-center text-xs font-medium text-red-700 dark:text-red-300">
               Historical data could not be loaded right now.
             </div>
-            <div v-else-if="historyLoading && history.length === 0" class="flex h-full items-center justify-center text-xs text-gray-400 font-medium uppercase tracking-widest">
+            <div v-else-if="historyLoading && history.length === 0" class="flex h-full items-center justify-center text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest">
               Loading chart data...
             </div>
             <ClientOnly v-else>
@@ -222,24 +222,24 @@
 
         <!-- Lifecycle Information Grid (Desktop Only) -->
         <section v-if="isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
-          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between gap-1">
-               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
-               <span class="text-[8px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
+          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex min-w-0 items-center justify-between gap-1">
+               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="min-w-0 truncate text-[8px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
-             <div class="flex items-baseline gap-1 mt-0.5">
+             <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
-          <div class="px-2.5 py-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
-             <div class="flex items-center justify-between gap-1">
-               <span class="text-[9px] uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
-               <span class="text-[8px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
+          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+             <div class="flex min-w-0 items-center justify-between gap-1">
+               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="min-w-0 truncate text-[8px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
-             <div class="flex items-baseline gap-1 mt-0.5">
+             <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[9px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
              </div>
           </div>
         </section>
@@ -247,24 +247,24 @@
         <!-- Recent Activity Feed -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Recent Activity</h2>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Recent Activity</h2>
             <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">View All</NuxtLink>
           </div>
-          <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
+          <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
             <div v-if="eventsLoading && events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-gray-400 italic">Loading recent events...</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 italic">Loading recent events...</p>
             </div>
             <div v-else-if="eventsError && events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-red-500 italic">Recent activity could not be loaded.</p>
+              <p class="text-xs text-red-600 dark:text-red-400 italic">Recent activity could not be loaded.</p>
             </div>
             <div v-else-if="events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-gray-400 italic">No recent events logged</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 italic">No recent events logged</p>
             </div>
             <div v-else class="divide-y divide-gray-50 dark:divide-slate-800">
               <div v-for="event in events" :key="event.id" class="px-4 py-3 space-y-1.5 group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
                 <div class="flex items-center justify-between">
                   <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider" :class="getEventTagClass(event.type)">{{ event.type }}</span>
-                  <span class="text-[10px] font-mono text-gray-400 group-hover:text-gray-500">{{ formatEventTime(event.timestamp) }}</span>
+                  <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 group-hover:text-gray-600">{{ formatEventTime(event.timestamp) }}</span>
                 </div>
                 <p class="text-xs leading-snug font-medium text-gray-700 dark:text-gray-300">{{ event.message }}</p>
               </div>
@@ -384,15 +384,15 @@ const fishLifecycle = computed(() => {
 
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-50/70 dark:bg-red-950/25 border-red-100/60 dark:border-red-950/40 text-gray-900 dark:text-gray-100'
-  if (s === 'warning') return 'bg-yellow-50/70 dark:bg-yellow-950/20 border-yellow-100/70 dark:border-yellow-950/40 text-gray-900 dark:text-gray-100'
+  if (s === 'danger') return 'bg-red-50/70 dark:bg-red-950/40 border-red-100/60 dark:border-red-900/50 text-gray-900 dark:text-gray-100'
+  if (s === 'warning') return 'bg-amber-50/70 dark:bg-amber-950/40 border-amber-100/70 dark:border-amber-900/50 text-gray-900 dark:text-gray-100'
   return 'bg-emerald-50/30 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30'
 })
 
 const alertIconBgClass = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-100/50 text-red-500'
-  if (s === 'warning') return 'bg-yellow-100/50 text-yellow-600'
+  if (s === 'danger') return 'bg-red-100/50 text-red-600 dark:bg-red-900/30 dark:text-red-400'
+  if (s === 'warning') return 'bg-amber-100/50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
   return 'bg-emerald-100/50 text-emerald-600'
 })
 
@@ -405,8 +405,8 @@ const alertTitle = computed(() => {
 
 const alertTitleClass = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'text-red-600 dark:text-red-400 font-bold'
-  if (s === 'warning') return 'text-yellow-700 dark:text-yellow-400'
+  if (s === 'danger') return 'text-red-700 dark:text-red-400 font-bold'
+  if (s === 'warning') return 'text-amber-800 dark:text-amber-400'
   return 'text-emerald-700 dark:text-emerald-400'
 })
 
@@ -472,14 +472,14 @@ const trendLabel = computed(() => {
 
 const trendColor = computed(() => {
   const d = trendDirection.value
-  if (d === 'stable') return 'text-gray-400 dark:text-gray-500'
+  if (d === 'stable') return 'text-gray-500 dark:text-gray-400'
   return 'text-blue-600 dark:text-blue-400'
 })
 
 const overallDotClass = computed(() => {
   const s = latest.value?.overall_status
   if (s === 'danger') return 'bg-red-500 animate-pulse'
-  if (s === 'warning') return 'bg-yellow-500'
+  if (s === 'warning') return 'bg-amber-500'
   return 'bg-emerald-500' 
 })
 
@@ -524,9 +524,9 @@ async function exportCsv() {
 }
 
 const getEventTagClass = (type) => {
-  if (type === 'danger') return 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'
-  if (type === 'warning') return 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400'
-  return 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
+  if (type === 'danger') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+  if (type === 'warning') return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+  return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
 }
 
 const formatEventTime = (timestamp) => {

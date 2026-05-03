@@ -1,43 +1,45 @@
-# UI/UX Improvement Issues (Aquaguard IoT Dashboard)
+# UI/UX Color Contrast — Issue Tracker
 
-Berikut adalah hasil *deep analysis* terkait UI/UX dari dashboard saat ini. Semua *issue* di bawah ini difokuskan pada perbaikan praktis tanpa *over-engineering* (quick wins).
-
-## 1. Chart Visualization & Bounds (Kritis)
-**Masalah:** 
-- Garis grafik pada `MinimalChart` sering terpotong di batas atas atau bawah karena nilai statis, membuat data seolah "hilang".
-- Label Y-axis (`10.2`, `8.1`) posisinya kurang rapi dan menabrak garis grafik.
-- Sumbu X tidak memiliki keterangan waktu sama sekali.
-
-**Solusi Simple:**
-- Buat *bounds* Y-axis menjadi dinamis (ambil nilai `min` dan `max` dari data, beri *padding* 10%).
-- Rapikan posisi *absolute* label Y-axis (geser sedikit ke kiri).
-- Tambahkan 3 label waktu sederhana di bagian bawah sumbu X (misal: waktu awal, tengah, dan akhir dari rentang data).
+**Status:** ✅ RESOLVED  
+**Date Resolved:** 2026-05-04  
 
 ---
 
-## 2. Contrast & Readability (Menengah)
-**Masalah:**
-- Pada *Light Mode*, komponen **Critical Alert** menggunakan teks merah di atas *background* merah muda. Untuk dibaca dalam waktu lama, kontras ini kurang nyaman.
-- Daftar "Recent Activity" terlihat cukup padat; teks log berukuran kecil (`11px`) tanpa *spacing* yang cukup antar item.
+All issues identified in the deep contrast analysis have been fixed. Below is the summary of changes applied.
 
-**Solusi Simple:**
-- Tingkatkan kontras alert di *Light Mode* (misal: *background* putih dengan *border* merah tebal, atau teks merah yang lebih solid/gelap).
-- Tambahkan sedikit *padding* atau margin di `Recent Activity` agar daftar log lebih mudah di-*scan* secara visual.
+## Changes Applied
 
----
+### Phase 1 — Critical WCAG AA Contrast Fixes ✅
+- [x] All `text-gray-400` content text → `text-gray-500` or `text-gray-600` (ratio 4.64:1+)
+- [x] All `text-gray-300` separators → `text-gray-400` (ratio 2.85:1, acceptable for decorative)
+- [x] Warning colors standardized: `text-amber-600/700` → `text-amber-700/800` for better contrast
+- [x] Error text `text-red-500` → `text-red-600` (ratio 4.53:1, passes WCAG AA)
+- [x] Dark mode: `dark:text-gray-500` → `dark:text-gray-400` where applicable
+- [x] All input elements now have explicit `text-gray-900 dark:text-gray-100`
 
-## 3. Empty & Loading States (Menengah)
-**Masalah:**
-- Saat halaman di-*refresh*, tidak ada *feedback* visual bahwa data sedang dimuat. UI kosong beberapa milidetik lalu tiba-tiba muncul (*layout shift*).
+### Phase 2 — Color Harmony Standardization ✅
+- [x] Unified green to `emerald` palette — `tokens.css` accent updated to `#10b981`
+- [x] Unified warning to `amber` palette — removed all `yellow-*` mixing in dark mode
+- [x] Updated `tokens.css --color-accent` from `#22c55e` → `#10b981`
+- [x] Added complete `.dark` CSS custom property block in `tokens.css`
+- [x] Removed unused CSS tokens: `--color-accent-2`, `--color-accent-light`, `--color-accent-bg`, `--color-surface`
 
-**Solusi Simple:**
-- Gunakan state `pending` dari `useSupabaseData` untuk menampilkan *skeleton loader* sederhana (kotak abu-abu dengan efek `animate-pulse`) di komponen **Live Sensors** dan **Critical Alert**.
+### Phase 3 — Visual Polish ✅
+- [x] Font sizes bumped from 8px/9px → 10px minimum
+- [x] Dark mode borders: `dark:border-slate-800` → `dark:border-slate-700` (ratio 2.16:1)
+- [x] Dark mode alert tint opacity: `/25` → `/40` for visibility
+- [x] Body background gradient conflict resolved (uses CSS variable now)
+- [x] Dot grid opacity: `opacity-20` → `opacity-[0.06]` (light), `opacity-[0.03]` → `opacity-[0.04]` (dark)
+- [x] Suggested action box: solid colors instead of unpredictable blending
 
----
+### Phase 4 — Cleanup ✅
+- [x] Removed 7 unused components: InfoCard, MetricPill, SensorChart, SegmentedControl, NoticeBanner, StatusCard, OverallBadge
 
-## 4. Lifecycle Card Proportion (Minor)
-**Masalah:**
-- Pada kartu **Crop Age** dan **Fish Age**, angka `34` atau `40` sangat besar namun keterangan teks `Days` di sebelahnya sangat kecil dan terlihat melayang, meninggalkan cukup banyak *dead space* vertikal.
-
-**Solusi Simple:**
-- Sesuaikan ukuran tipografi: besarkan sedikit teks "Days" dan atur *alignment* (`items-baseline`) agar sejajar secara horizontal dengan angka utama, sehingga *card* terlihat lebih kokoh.
+## Files Modified
+- `assets/css/tokens.css` — Unified colors, added dark mode tokens, removed dead vars
+- `pages/index.vue` — 25+ contrast fixes across template & script
+- `pages/alerts.vue` — Nav icons, borders, label contrast, amber standardization
+- `pages/logs.vue` — Timestamps, error text, borders, title colors
+- `pages/config.vue` — Labels, input text colors, separators, borders
+- `components/CompactSensorRow.vue` — Label dark mode, unit contrast, amber standardization
+- `components/MinimalChart.vue` — Loading text contrast

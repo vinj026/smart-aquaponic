@@ -1,3 +1,25 @@
 import { createClient } from '@supabase/supabase-js'
+import { useRuntimeConfig } from '#imports'
 
-export const supabase = createClient('https://tnmytfvkywdqjtovhbug.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubXl0ZnZreXdkcWp0b3ZoYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1ODAwMDEsImV4cCI6MjA5MzE1NjAwMX0.3g0cAD1nhRsrMgcYmhpY2-6-gdhWzY2-d93rKNgNaZ8')
+let client: ReturnType<typeof createClient> | null = null
+
+function getSupabaseClient() {
+  if (client) return client
+
+  const config = useRuntimeConfig()
+  const { supabaseUrl, supabaseAnonKey } = config.public
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase runtime config. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  client = createClient(String(supabaseUrl), String(supabaseAnonKey))
+  return client
+}
+
+export const supabase = new Proxy({}, {
+  get(_target, prop) {
+    const value = getSupabaseClient()[prop as keyof ReturnType<typeof createClient>]
+    return typeof value === 'function' ? value.bind(getSupabaseClient()) : value
+  },
+}) as ReturnType<typeof createClient>
