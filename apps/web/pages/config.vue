@@ -10,10 +10,10 @@
           <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">System Config</h1>
+          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Konfigurasi Sistem</h1>
         </div>
         <div class="flex items-center gap-3">
-          <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+          <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
             <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
           </button>
           <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
@@ -26,20 +26,20 @@
         <!-- Config Form Card -->
         <section class="space-y-4 border-b border-gray-200 dark:border-slate-700 pb-6">
           <div v-if="configError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
-            Failed to load lifecycle configuration.
+            Gagal memuat konfigurasi siklus hidup.
           </div>
 
           <div class="space-y-1">
-            <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Lifecycle Settings</h2>
+            <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Pengaturan Siklus Hidup</h2>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 mb-4">
-              These dates are used to calculate crop and fish age, which directly influences the intelligent diagnosis and suggested actions.
+              Tanggal ini digunakan untuk menghitung umur tanaman dan ikan, yang secara langsung mempengaruhi diagnosis cerdas dan tindakan yang disarankan.
             </p>
           </div>
 
           <div class="grid gap-4" :class="isDesktopLayout ? 'grid-cols-2' : 'grid-cols-1'">
             <!-- Crop Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-400 block">Crop planting date</label>
+              <label class="text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-400 block">Tanggal tanam</label>
               <input 
                 v-model="form.crop_start_date" 
                 type="date" 
@@ -49,7 +49,7 @@
 
             <!-- Fish Start Date -->
             <div class="space-y-2">
-              <label class="text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-400 block">Fish stocking date</label>
+              <label class="text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-400 block">Tanggal tebar ikan</label>
               <input 
                 v-model="form.fish_start_date" 
                 type="date" 
@@ -64,8 +64,8 @@
               :disabled="saving || configLoading"
               class="inline-flex w-auto items-center justify-center rounded-md border border-gray-300 dark:border-slate-700 bg-transparent px-6 py-2 text-xs font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
             >
-              <span v-if="saveSuccess">✓ Saved</span>
-              <span v-else>{{ saving ? 'Saving...' : configLoading ? 'Loading...' : 'Save configuration' }}</span>
+              <span v-if="saveSuccess">✓ Tersimpan</span>
+              <span v-else>{{ saving ? 'Menyimpan...' : configLoading ? 'Memuat...' : 'Simpan konfigurasi' }}</span>
             </button>
           </div>
         </section>
@@ -73,18 +73,18 @@
         <!-- Sensor Thresholds Section -->
         <section class="space-y-4">
           <div class="space-y-1 px-1">
-            <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Sensor Thresholds</h2>
+            <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Batas Sensor</h2>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              These thresholds determine when sensor readings are flagged as warning or danger.
+              Batas ini menentukan kapan pembacaan sensor ditandai sebagai peringatan atau bahaya.
             </p>
           </div>
 
           <div v-if="thresholdsError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">
-            Failed to load sensor thresholds.
+            Gagal memuat batas sensor.
           </div>
 
           <div v-else-if="thresholdsLoading && thresholds.length === 0" class="rounded-md border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-4 text-xs text-gray-500 dark:text-gray-400 text-center">
-            Loading sensor thresholds...
+            Memuat batas sensor...
           </div>
 
           <div class="grid gap-4" :class="isDesktopLayout ? 'grid-cols-2' : 'grid-cols-1'">
@@ -96,7 +96,7 @@
 
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-1">
-                  <label class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 tracking-tighter">Normal range</label>
+                  <label class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 tracking-tighter">Rentang normal</label>
                   <div class="flex items-center gap-2">
                     <input v-model.number="t.min_normal" type="number" step="0.1" :placeholder="`e.g. ${t.min_normal}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-[10px] font-mono text-gray-900 dark:text-gray-100" />
                     <span class="text-gray-400 dark:text-gray-500">—</span>
@@ -104,7 +104,7 @@
                   </div>
                 </div>
                 <div class="space-y-1">
-                  <label class="text-[10px] font-bold text-gray-500 dark:text-gray-400 tracking-tighter">Safety range</label>
+                  <label class="text-[10px] font-bold text-gray-500 dark:text-gray-400 tracking-tighter">Rentang aman</label>
                   <div class="flex items-center gap-2">
                     <input v-model.number="t.min_warning" type="number" step="0.1" :placeholder="`e.g. ${t.min_warning}`" @change="handleThresholdChange(t)" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded px-2 py-1 text-[10px] font-mono text-gray-900 dark:text-gray-100" />
                     <span class="text-gray-400 dark:text-gray-500">—</span>
@@ -152,12 +152,12 @@ const { thresholds, loading: thresholdsLoading, error: thresholdsError, updateTh
 
 function validateThresholdUpdates(updates) {
   const values = Object.values(updates)
-  if (!values.every(Number.isFinite)) return 'Threshold values must be valid numbers.'
-  if (values.some(value => value < 0)) return 'Threshold values cannot be negative.'
-  if (updates.min_normal > updates.max_normal) return 'Normal minimum must be less than or equal to normal maximum.'
-  if (updates.min_warning > updates.max_warning) return 'Safety minimum must be less than or equal to safety maximum.'
+  if (!values.every(Number.isFinite)) return 'Nilai batas harus berupa angka yang valid.'
+  if (values.some(value => value < 0)) return 'Nilai batas tidak boleh negatif.'
+  if (updates.min_normal > updates.max_normal) return 'Minimum normal harus lebih kecil atau sama dengan maksimum normal.'
+  if (updates.min_warning > updates.max_warning) return 'Minimum aman harus lebih kecil atau sama dengan maksimum aman.'
   if (updates.min_warning > updates.min_normal || updates.max_warning < updates.max_normal) {
-    return 'Safety range must fully contain the normal range.'
+    return 'Rentang aman harus mencakup seluruh rentang normal.'
   }
   return null
 }
@@ -173,7 +173,7 @@ async function handleSave() {
     })
 
     if (error) {
-      alert('Failed to save config: ' + error.message)
+      alert('Gagal menyimpan konfigurasi: ' + error.message)
       return
     }
 
@@ -209,6 +209,6 @@ async function handleThresholdChange(t) {
   const { error } = await updateThreshold(t.id, {
     ...updates
   })
-  if (error) alert('Failed to update threshold: ' + error.message)
+  if (error) alert('Gagal memperbarui batas: ' + error.message)
 }
 </script>
