@@ -388,8 +388,8 @@ const fishLifecycle = computed(() => {
 
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-white dark:bg-slate-900 border-red-500 border-2 text-red-700 dark:text-red-400'
-  if (s === 'warning') return 'bg-white dark:bg-slate-900 border-yellow-500 border-2 text-yellow-700 dark:text-yellow-400'
+  if (s === 'danger') return 'bg-red-50/50 dark:bg-red-950/20 border-transparent text-red-700 dark:text-red-400'
+  if (s === 'warning') return 'bg-yellow-50/50 dark:bg-yellow-950/20 border-transparent text-yellow-700 dark:text-yellow-400'
   return 'bg-emerald-50/30 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30'
 })
 
