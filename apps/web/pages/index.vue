@@ -15,27 +15,27 @@
           <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3 tracking-[0.2em]">Aquaguard IoT</h1>
         </div>
         <div class="flex items-center gap-3">
-          <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:block">Updated {{ timeAgoText }}</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:block">Diperbarui {{ timeAgoText }}</div>
           <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
-            <NuxtLink to="/alerts" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" title="Alerts">
+            <NuxtLink to="/alerts" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" title="Peringatan">
               <BellIcon class="w-3.5 h-3.5" />
-              <span v-if="systemHealthLabel !== 'Healthy'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
+              <span v-if="systemHealthLabel !== 'Sehat'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
             </NuxtLink>
-            <NuxtLink to="/logs" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Logs">
+            <NuxtLink to="/logs" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Log">
               <ActivityIcon class="w-3.5 h-3.5" />
             </NuxtLink>
-            <NuxtLink to="/config" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Settings">
+            <NuxtLink to="/config" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Pengaturan">
               <SettingsIcon class="w-3.5 h-3.5" />
             </NuxtLink>
             <button 
               @click="exportCsv" 
               class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" 
               :disabled="isExporting"
-              title="Export CSV" 
+              title="Ekspor CSV" 
             >
               <DownloadIcon class="w-3.5 h-3.5" :class="{ 'animate-bounce opacity-50': isExporting }" />
             </button>
-            <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+            <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
               <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
             </button>
             <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
@@ -87,9 +87,9 @@
             </div>
           </div>
           <div v-else-if="latestError" class="px-4 py-4 rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 flex flex-col gap-2 shadow-sm min-h-[100px]">
-            <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-red-600 dark:text-red-400">Live Data Unavailable</h2>
+            <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-red-600 dark:text-red-400">Data Aktif Tidak Tersedia</h2>
             <p class="text-xs leading-relaxed text-red-700 dark:text-red-300">
-              The latest sensor reading could not be loaded. Realtime sync will retry automatically when the connection recovers.
+              Pembacaan sensor terbaru tidak dapat dimuat. Sinkronisasi akan mencoba ulang otomatis saat koneksi pulih.
             </p>
           </div>
           <!-- Skeleton Loader -->
@@ -108,8 +108,8 @@
         <!-- Real-time Sensors -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Live Sensors</h2>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 rounded uppercase tracking-tighter">Realtime</span>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Sensor Aktif</h2>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 rounded uppercase tracking-tighter">Waktu Nyata</span>
           </div>
           <div v-if="latest" class="grid grid-cols-2 gap-3">
             <CompactSensorRow 
@@ -130,7 +130,7 @@
             />
           </div>
           <div v-else-if="latestError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 p-4 text-xs text-red-700 dark:text-red-300 shadow-sm">
-            Sensor cards are unavailable because the latest reading request failed.
+            Kartu sensor tidak tersedia karena pembacaan terbaru gagal dimuat.
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
             <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md animate-pulse"></div>
@@ -138,25 +138,25 @@
         </section>
 
         <!-- Lifecycle (Mobile Only - between sensors and chart) -->
-        <section v-if="!isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
+        <section v-if="!isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="Detail siklus hidup sistem">
           <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
-               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Tanaman</span>
                <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
           <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
-               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Ikan</span>
                <span class="text-[10px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
         </section>
@@ -165,14 +165,14 @@
         <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
           <div class="flex items-center justify-between">
             <div class="space-y-1">
-              <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Historical Trends</h2>
+              <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Tren Historis</h2>
               <div class="flex items-center gap-2">
                 <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400">Realtime sync active</span>
+                <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400">Sinkronisasi aktif</span>
               </div>
             </div>
             <div class="flex items-center gap-1.5 bg-gray-50 dark:bg-slate-800/50 px-2 py-1 rounded border border-gray-100 dark:border-slate-700/50">
-              <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tighter">Trend:</span>
+              <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tighter">Tren:</span>
               <span class="text-[10px] font-bold uppercase tracking-tight flex items-center gap-1" :class="trendColor">
                 <svg v-if="trendDirection === 'up'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -204,10 +204,10 @@
 
           <div class="h-64 w-full relative">
             <div v-if="historyError && history.length === 0" class="flex h-full items-center justify-center rounded-md border border-red-200 dark:border-red-900/50 bg-red-50/40 dark:bg-red-950/10 px-4 text-center text-xs font-medium text-red-700 dark:text-red-300">
-              Historical data could not be loaded right now.
+              Data historis belum bisa dimuat saat ini.
             </div>
             <div v-else-if="historyLoading && history.length === 0" class="flex h-full items-center justify-center text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest">
-              Loading chart data...
+              Memuat data grafik...
             </div>
             <ClientOnly v-else>
               <MinimalChart :history="history" :parameter="selected" />
@@ -221,25 +221,25 @@
         <div :class="isDesktopLayout ? 'w-full lg:w-1/3 flex flex-col gap-6' : 'contents'">
 
         <!-- Lifecycle Information Grid (Desktop Only) -->
-        <section v-if="isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="System lifecycle details">
+        <section v-if="isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="Detail siklus hidup sistem">
           <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex min-w-0 items-center justify-between gap-1">
-               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Crop Age</span>
+               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Tanaman</span>
                <span class="min-w-0 truncate text-[8px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ cropAge }}</span>
-               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
           <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex min-w-0 items-center justify-between gap-1">
-               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Fish Age</span>
+               <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Ikan</span>
                <span class="min-w-0 truncate text-[8px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
              </div>
              <div class="flex items-baseline gap-1.5 mt-0.5">
                <span class="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">{{ fishAge }}</span>
-               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Days</span>
+               <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
         </section>
@@ -247,26 +247,26 @@
         <!-- Recent Activity Feed -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Recent Activity</h2>
-            <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">View All</NuxtLink>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Aktivitas Terkini</h2>
+            <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">Lihat semua</NuxtLink>
           </div>
           <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
             <div v-if="eventsLoading && events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-gray-500 dark:text-gray-400 italic">Loading recent events...</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 italic">Memuat aktivitas terbaru...</p>
             </div>
             <div v-else-if="eventsError && events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-red-600 dark:text-red-400 italic">Recent activity could not be loaded.</p>
+              <p class="text-xs text-red-600 dark:text-red-400 italic">Aktivitas terkini tidak dapat dimuat.</p>
             </div>
             <div v-else-if="events.length === 0" class="p-8 text-center">
-              <p class="text-xs text-gray-500 dark:text-gray-400 italic">No recent events logged</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 italic">Belum ada aktivitas tercatat</p>
             </div>
             <div v-else class="divide-y divide-gray-50 dark:divide-slate-800">
               <div v-for="event in events" :key="event.id" class="px-4 py-3 space-y-1.5 group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
                 <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider" :class="getEventTagClass(event.type)">{{ event.type }}</span>
+                  <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider" :class="getEventTagClass(event.type)">{{ eventTypeLabel(event.type) }}</span>
                   <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 group-hover:text-gray-600">{{ formatEventTime(event.timestamp) }}</span>
                 </div>
-                <p class="text-xs leading-snug font-medium text-gray-700 dark:text-gray-300">{{ event.message }}</p>
+                <p class="text-xs leading-snug font-medium text-gray-700 dark:text-gray-300">{{ translateEventMessage(event.message) }}</p>
               </div>
             </div>
           </div>
@@ -333,17 +333,17 @@ const timeAgoText = computed(() => {
   const ts = latest.value?.timestamp
   if (!ts) return '—'
   const diff = Math.floor((now.value - new Date(ts).getTime()) / 1000)
-  if (diff < 5) return 'just now'
-  if (diff < 60) return `${diff}s ago`
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
-  return 'long ago'
+  if (diff < 5) return 'baru saja'
+  if (diff < 60) return `${diff} detik lalu`
+  if (diff < 3600) return `${Math.floor(diff / 60)} menit lalu`
+  return 'lama lalu'
 })
 
 const systemHealthLabel = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'Critical'
-  if (s === 'warning') return 'Warning'
-  return 'Healthy'
+  if (s === 'danger') return 'Kritis'
+  if (s === 'warning') return 'Peringatan'
+  return 'Sehat'
 })
 
 function parseStoredDate(dateString) {
@@ -366,20 +366,20 @@ const fishAge = computed(() => {
 
 const cropLifecycle = computed(() => {
   const a = cropAge.value
-  if (a === 0) return 'Not Set'
-  if (a < 7) return 'Seedling'
-  if (a < 21) return 'Vegetative'
-  if (a < 30) return 'Maturing'
-  return 'Near Harvest'
+  if (a === 0) return 'Belum Diatur'
+  if (a < 7) return 'Bibit'
+  if (a < 21) return 'Vegetatif'
+  if (a < 30) return 'Pematangan'
+  return 'Mendekati Panen'
 })
 
 const fishLifecycle = computed(() => {
   const a = fishAge.value
-  if (a === 0) return 'Not Set'
-  if (a < 14) return 'Fry'
-  if (a < 30) return 'Fingerling'
-  if (a < 60) return 'Grow-out'
-  return 'Harvestable'
+  if (a === 0) return 'Belum Diatur'
+  if (a < 14) return 'Larva'
+  if (a < 30) return 'Benih Ikan'
+  if (a < 60) return 'Pertumbuhan'
+  return 'Siap Panen'
 })
 
 const alertClasses = computed(() => {
@@ -398,9 +398,9 @@ const alertIconBgClass = computed(() => {
 
 const alertTitle = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'Critical Alert'
-  if (s === 'warning') return 'System Warning'
-  return 'System Healthy'
+  if (s === 'danger') return 'Peringatan Kritis'
+  if (s === 'warning') return 'Peringatan Sistem'
+  return 'Sistem Sehat'
 })
 
 const alertTitleClass = computed(() => {
@@ -412,14 +412,14 @@ const alertTitleClass = computed(() => {
 
 function formatSensorValue(value, fractionDigits = 1) {
   const n = Number(value)
-  if (!Number.isFinite(n)) return 'unknown'
+  if (!Number.isFinite(n)) return 'tidak diketahui'
   return Number(n.toFixed(fractionDigits)).toString()
 }
 
 const insightText = computed(() => {
   const l = latest.value
   const h = history.value
-  if (!l) return 'Initializing system context...'
+  if (!l) return 'Menginisialisasi konteks sistem...'
   
   if (h.length >= 5) {
     const lastFive = h.slice(-5)
@@ -442,17 +442,17 @@ const insightText = computed(() => {
   if (l.turbidity_status !== 'normal') return `Kekeruhan air naik ke ${formatSensorValue(l.turbidity, 1)} NTU - di atas batas aman (5 NTU). Padatan tersuspensi dapat menyumbat filter dan menandakan limbah berlebih.`
   if (l.water_level_status !== 'normal') return `Volume air turun ke ${formatSensorValue(l.water_level, 0)}% - di bawah batas aman (70%). Pompa berisiko berjalan kering dan sirkulasi sistem bisa terganggu.`
   
-  return 'All aquatic parameters are within optimal ranges for a balanced ecosystem.'
+  return 'Semua parameter akuatik berada dalam rentang optimal untuk ekosistem yang seimbang.'
 })
 
 const suggestedAction = computed(() => {
   const l = latest.value
-  if (!l || l.overall_status === 'normal') return 'Continue monitoring routine schedule.'
-  if (l.ph_status !== 'normal') return 'Adjust pH using diluted buffers and retest.'
-  if (l.tds_status !== 'normal') return 'Top up with fresh water or adjust nutrient dosing.'
-  if (l.turbidity_status !== 'normal') return 'Clean filters and reduce fish feeding.'
-  if (l.water_level_status !== 'normal') return 'Immediate water replenishment required.'
-  return 'Inspect system sensors and physical components.'
+  if (!l || l.overall_status === 'normal') return 'Lanjutkan jadwal pemantauan rutin.'
+  if (l.ph_status !== 'normal') return 'Sesuaikan pH menggunakan buffer encer dan uji ulang.'
+  if (l.tds_status !== 'normal') return 'Tambahkan air bersih atau sesuaikan dosis nutrisi.'
+  if (l.turbidity_status !== 'normal') return 'Bersihkan filter dan kurangi pemberian pakan ikan.'
+  if (l.water_level_status !== 'normal') return 'Pengisian air segera diperlukan.'
+  return 'Periksa sensor dan komponen fisik sistem.'
 })
 
 const trendDirection = computed(() => {
@@ -465,9 +465,9 @@ const trendDirection = computed(() => {
 
 const trendLabel = computed(() => {
   const d = trendDirection.value
-  if (d === 'up') return 'Increasing'
-  if (d === 'down') return 'Decreasing'
-  return 'Stable'
+  if (d === 'up') return 'Meningkat'
+  if (d === 'down') return 'Menurun'
+  return 'Stabil'
 })
 
 const trendColor = computed(() => {
@@ -485,11 +485,31 @@ const overallDotClass = computed(() => {
 
 // Methods
 function statusLabel(status) {
-  if (!status) return 'None'
+  if (!status) return 'Kosong'
   if (status === 'normal') return 'Normal'
-  if (status === 'warning') return 'Warn'
-  if (status === 'danger') return 'Alert'
+  if (status === 'warning') return 'Waspada'
+  if (status === 'danger') return 'Kritis'
   return String(status)
+}
+
+function eventTypeLabel(type) {
+  if (type === 'danger') return 'Kritis'
+  if (type === 'warning') return 'Peringatan'
+  if (type === 'recovery') return 'Pulih'
+  return 'Normal'
+}
+
+function translateEventMessage(message) {
+  if (!message) return ''
+  return message
+    .replace(/entered danger zone/gi, 'memasuki zona bahaya')
+    .replace(/entered warning zone/gi, 'memasuki zona peringatan')
+    .replace(/returned to normal/gi, 'kembali ke normal')
+    .replace(/recovered to normal/gi, 'pulih ke normal')
+    .replace(/is critically/gi, 'sangat kritis')
+    .replace(/Immediate action required/gi, 'Tindakan segera diperlukan')
+    .replace(/Monitor closely/gi, 'Pantau dengan ketat')
+    .replace(/No action needed/gi, 'Tidak perlu tindakan')
 }
 
 async function exportCsv() {
@@ -502,7 +522,7 @@ async function exportCsv() {
     const rows = history.value
     if (!rows || rows.length === 0) return
 
-    const headers = ['Timestamp', 'pH', 'TDS', 'Turbidity', 'Water Level', 'Status']
+    const headers = ['Waktu', 'pH', 'TDS', 'Kekeruhan', 'Level Air', 'Status']
     const csv = [
       headers.join(','),
       ...rows.map(r => [
