@@ -108,49 +108,50 @@ Deno.serve(async (req) => {
         water_level: { name: "Volume air",    unit: "%"    },
       };
 
-      // Konteks pesan per sensor per level
+      // Konteks pesan per sensor per level — tone santai & conversational
       const warningContext: Record<MetricKey, (val: number, prev: number) => string> = {
         ph: (val, prevVal) => {
-          const dir = val > prevVal ? "naik" : "turun";
-          const level = val > prevVal ? "tinggi" : "rendah";
-          return `pH air ${dir} ke ${val} — pH ${level} dapat menghambat penyerapan nutrisi tanaman.`;
+          return val > prevVal
+            ? `pH lagi naik nih ke ${val}, kalau makin tinggi tanaman bakal susah serap nutrisi.`
+            : `pH lagi turun nih ke ${val}, tanaman mulai susah serap nutrisi kalau dibiarkan.`;
         },
         tds: (val, prevVal) => {
-          const dir = val > prevVal ? "naik" : "turun";
-          const level = val > prevVal ? "tinggi" : "rendah";
-          return `Nutrisi (TDS) ${dir} ke ${val} ppm — Konsentrasi nutrisi terlalu ${level}, pertumbuhan tanaman bisa terganggu.`;
+          return val > prevVal
+            ? `Nutrisi lagi tinggi nih (${val} ppm), kalau kebanyakan bisa bakar akar tanaman.`
+            : `Nutrisi lagi rendah nih (${val} ppm), tanaman butuh asupan lebih.`;
         },
         turbidity: (val, _prev) => {
-          return `Kejernihan air turun ke ${val} NTU — Air mulai keruh, filter kemungkinan perlu dibersihkan.`;
+          return `Air mulai keruh (${val} NTU), kayaknya filter perlu dicek.`;
         },
-        water_level: (val, prevVal) => {
-          const dir = val > prevVal ? "naik" : "turun";
-          return `Volume air ${dir} ke ${val}% — Sirkulasi sistem bisa terganggu, segera tambahkan air.`;
+        water_level: (val, _prevVal) => {
+          return `Volume air tinggal ${val}%, mending tambah air sekarang sebelum sirkulasi terganggu.`;
         },
       };
 
       const dangerContext: Record<MetricKey, (val: number) => string> = {
         ph: (val) => {
-          const cond = val > 7.5 ? "basa ekstrem" : "asam ekstrem";
-          return `pH air kritis: ${val} — Kondisi ${cond} dapat merusak ekosistem dan membunuh ikan.`;
+          return val > 7.5
+            ? `pH udah di ${val}, ini bahaya buat ikan dan tanaman. Segera cek dan koreksi.`
+            : `pH udah di ${val}, ini bahaya buat ikan dan tanaman. Segera cek dan koreksi.`;
         },
         tds: (val) => {
-          const cond = val > 700 ? "terlalu pekat" : "terlalu encer";
-          return `Nutrisi (TDS) kritis: ${val} ppm — Larutan ${cond}, akar tanaman berisiko rusak permanen.`;
+          return val > 700
+            ? `Nutrisi udah kebanyakan (${val} ppm), perlu ganti sebagian air sekarang.`
+            : `Nutrisi drop parah ke ${val} ppm, perlu ganti sebagian air sekarang.`;
         },
         turbidity: (val) => {
-          return `Kejernihan air kritis: ${val} NTU — Air sangat keruh, filter tersumbat dan ekosistem terancam.`;
+          return `Air keruh banget (${val} NTU), coba kurangi pakan ikan dan bersihin filter sekarang.`;
         },
         water_level: (val) => {
-          return `Volume air kritis: ${val}% — Level sangat rendah, pompa celup berisiko rusak akibat berjalan kering.`;
+          return `Volume air udah kritis (${val}%), segera tambah air.`;
         },
       };
 
       const recoveryMsg: Record<MetricKey, (val: number) => string> = {
-        ph:          (val) => `pH air kembali ke normal: ${val}.`,
-        tds:         (val) => `Nutrisi (TDS) kembali ke normal: ${val} ppm.`,
-        turbidity:   (val) => `Kejernihan air kembali ke normal: ${val} NTU.`,
-        water_level: (val) => `Volume air kembali ke normal: ${val}%.`,
+        ph:          (val) => `pH udah balik ke ${val}, semua oke.`,
+        tds:         (val) => `Nutrisi udah balik normal (${val} ppm), aman.`,
+        turbidity:   (val) => `Air udah jernih lagi (${val} NTU), nice.`,
+        water_level: (val) => `Volume air udah balik normal (${val}%), aman.`,
       };
 
       for (const [m, info] of Object.entries(metrics) as [MetricKey, typeof metrics[MetricKey]][]) {
