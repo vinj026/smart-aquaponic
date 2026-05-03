@@ -77,7 +77,7 @@
             
             <!-- Suggested Action (Only for non-normal) -->
             <div v-if="latest.overall_status !== 'normal'" 
-                 class="ml-10 rounded-md border border-gray-200/70 dark:border-white/10 bg-white/60 dark:bg-slate-950/30 px-3 py-2">
+                 class="ml-10 rounded-md border border-white/10 bg-white/60 dark:bg-slate-950/30 px-3 py-2">
               <p class="text-xs font-medium flex items-center gap-2 text-gray-500 dark:text-gray-400">
                 <svg class="w-3 h-3 opacity-80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414l2.543 2.543 6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" />
