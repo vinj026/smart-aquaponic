@@ -1,18 +1,18 @@
 <template>
   <div class="rounded-xl border p-4 shadow-sm" :class="cardClass">
-    <div class="text-sm font-medium text-slate-600">
+    <div class="text-xs font-medium text-slate-600">
       {{ title }}
     </div>
 
-    <div class="mt-3 text-3xl font-semibold text-slate-900">
+    <div class="mt-3 text-2xl font-semibold text-slate-900">
       <span v-if="value == null">—</span>
       <template v-else>
         {{ value }}
-        <span v-if="unit" class="ml-1 text-base font-medium text-slate-600">{{ unit }}</span>
+        <span v-if="unit" class="ml-1 text-sm font-medium text-slate-600">{{ unit }}</span>
       </template>
     </div>
 
-    <div class="mt-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+    <div class="mt-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide"
       :class="badgeClass"
     >
       <span class="h-2 w-2 rounded-full" :class="dotClass" />
