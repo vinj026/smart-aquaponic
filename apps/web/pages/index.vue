@@ -66,10 +66,10 @@
                  </svg>
               </div>
               <div class="space-y-1 min-w-0">
-                <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest leading-none flex items-center gap-2 text-current opacity-80">
+                <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest leading-none flex items-center gap-2 opacity-80" :class="alertTitleClass">
                    {{ alertTitle }}
                 </h2>
-                <p class="text-xs font-medium leading-relaxed tracking-tight">
+                <p class="text-xs font-medium leading-relaxed tracking-tight text-gray-900 dark:text-gray-100">
                    {{ insightText }}
                 </p>
               </div>
@@ -78,7 +78,7 @@
             <!-- Suggested Action (Only for non-normal) -->
             <div v-if="latest.overall_status !== 'normal'" 
                  class="mt-1 pl-10 border-t border-current/20 pt-3">
-              <p class="text-xs font-semibold flex items-center gap-1.5">
+              <p class="text-xs font-semibold flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
                 <svg class="w-3 h-3 opacity-70 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414l2.543 2.543 6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
@@ -384,7 +384,7 @@ const fishLifecycle = computed(() => {
 
 const alertClasses = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'bg-red-50/50 dark:bg-red-950/20 border-transparent text-red-700 dark:text-red-400'
+  if (s === 'danger') return 'bg-red-900/20 dark:bg-red-950/40 border-transparent text-gray-900 dark:text-gray-100'
   if (s === 'warning') return 'bg-yellow-50/50 dark:bg-yellow-950/20 border-transparent text-yellow-700 dark:text-yellow-400'
   return 'bg-emerald-50/30 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30'
 })
@@ -401,6 +401,13 @@ const alertTitle = computed(() => {
   if (s === 'danger') return 'Critical Alert'
   if (s === 'warning') return 'System Warning'
   return 'System Healthy'
+})
+
+const alertTitleClass = computed(() => {
+  const s = latest.value?.overall_status
+  if (s === 'danger') return 'text-red-600 dark:text-red-400 font-bold'
+  if (s === 'warning') return 'text-yellow-700 dark:text-yellow-400'
+  return 'text-emerald-700 dark:text-emerald-400'
 })
 
 function formatSensorValue(value, fractionDigits = 1) {
