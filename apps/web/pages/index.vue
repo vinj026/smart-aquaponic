@@ -112,7 +112,7 @@
         <!-- Real-time Sensors -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-500">Live Sensors</h2>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Live Sensors</h2>
             <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-500 rounded uppercase tracking-tighter">Realtime</span>
           </div>
           <div v-if="latest" class="grid grid-cols-2 gap-3">
@@ -169,7 +169,7 @@
         <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
           <div class="flex items-center justify-between">
             <div class="space-y-1">
-              <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-500">Historical Trends</h2>
+              <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Historical Trends</h2>
               <div class="flex items-center gap-2">
                 <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
                 <span class="text-[10px] font-medium text-gray-400">Realtime sync active</span>
@@ -251,7 +251,7 @@
         <!-- Recent Activity Feed -->
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
-            <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-500">Recent Activity</h2>
+            <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-500">Recent Activity</h2>
             <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">View All</NuxtLink>
           </div>
           <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
