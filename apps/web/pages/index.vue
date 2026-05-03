@@ -68,8 +68,6 @@
               <div class="space-y-1 min-w-0">
                 <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest leading-none flex items-center gap-2 text-current opacity-80">
                    {{ alertTitle }}
-                   <span v-if="latest.overall_status !== 'normal'" class="w-1 h-1 rounded-full bg-current opacity-40"></span>
-                   <span v-if="latest.overall_status !== 'normal'" class="text-xs lowercase font-medium opacity-80">Requires attention</span>
                 </h2>
                 <p class="text-xs font-medium leading-relaxed tracking-tight">
                    {{ insightText }}
