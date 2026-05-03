@@ -405,6 +405,12 @@ const alertTitle = computed(() => {
   return 'System Healthy'
 })
 
+function formatSensorValue(value, fractionDigits = 1) {
+  const n = Number(value)
+  if (!Number.isFinite(n)) return 'unknown'
+  return Number(n.toFixed(fractionDigits)).toString()
+}
+
 const insightText = computed(() => {
   const l = latest.value
   const h = history.value
@@ -414,14 +420,22 @@ const insightText = computed(() => {
     const lastFive = h.slice(-5)
     const tdsTrend = lastFive[4].tds - lastFive[0].tds
     if (l.ph > 7.5 && l.tds > 700 && tdsTrend > 0 && l.turbidity_status !== 'normal') {
-      return 'Potential overfeeding detected. High pH and rising TDS levels correlated with poor clarity suggest excess organic waste.'
+      return `pH naik ke ${formatSensorValue(l.ph, 2)}, TDS mencapai ${formatSensorValue(l.tds, 0)} ppm, dan air keruh di ${formatSensorValue(l.turbidity, 1)} NTU. Kombinasi ini mengarah ke potensi overfeeding atau penumpukan limbah organik.`
     }
   }
 
-  if (l.ph_status !== 'normal') return l.ph > 7.5 ? 'System pH is too alkaline. Risk of nutrient lockout.' : 'Acidic pH detected. High acidity can stress fish.'
-  if (l.tds_status !== 'normal') return l.tds > 1000 ? 'Nutrient concentration is excessively high. Risk of root burn.' : 'Nutrient levels are insufficient for optimal growth.'
-  if (l.turbidity_status !== 'normal') return 'Water clarity is poor. Inspect mechanical filters and reduce feeding.'
-  if (l.water_level_status !== 'normal') return 'Water volume is critically low. Submersible pumps are at risk.'
+  if (l.ph_status !== 'normal') {
+    return l.ph > 7.5
+      ? `pH naik ke ${formatSensorValue(l.ph, 2)} - di atas batas aman (7.5). Kondisi basa dapat memicu nutrient lockout dan menghambat penyerapan nutrisi tanaman.`
+      : `pH turun ke ${formatSensorValue(l.ph, 2)} - di bawah batas aman (6.5). Kondisi asam dapat menghambat pertumbuhan tanaman dan menstress ikan.`
+  }
+  if (l.tds_status !== 'normal') {
+    return l.tds > 700
+      ? `TDS naik ke ${formatSensorValue(l.tds, 0)} ppm - di atas batas aman (700 ppm). Larutan yang terlalu pekat dapat membakar akar dan menumpuk residu nutrisi.`
+      : `TDS turun ke ${formatSensorValue(l.tds, 0)} ppm - di bawah batas aman (300 ppm). Nutrisi rendah dapat memperlambat pertumbuhan tanaman.`
+  }
+  if (l.turbidity_status !== 'normal') return `Kekeruhan air naik ke ${formatSensorValue(l.turbidity, 1)} NTU - di atas batas aman (5 NTU). Padatan tersuspensi dapat menyumbat filter dan menandakan limbah berlebih.`
+  if (l.water_level_status !== 'normal') return `Volume air turun ke ${formatSensorValue(l.water_level, 0)}% - di bawah batas aman (70%). Pompa berisiko berjalan kering dan sirkulasi sistem bisa terganggu.`
   
   return 'All aquatic parameters are within optimal ranges for a balanced ecosystem.'
 })
