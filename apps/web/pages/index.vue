@@ -393,7 +393,7 @@ const alertIconBgClass = computed(() => {
   const s = latest.value?.overall_status
   if (s === 'danger') return 'bg-red-100/50 text-red-600 dark:bg-red-900/30 dark:text-red-400'
   if (s === 'warning') return 'bg-amber-100/50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-  return 'bg-emerald-100/50 text-emerald-600'
+  return 'bg-emerald-100/50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
 })
 
 const alertTitle = computed(() => {
