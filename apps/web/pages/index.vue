@@ -77,12 +77,10 @@
             
             <!-- Suggested Action (Only for non-normal) -->
             <div v-if="latest.overall_status !== 'normal'" 
-                 class="mt-1 pl-10 flex flex-col gap-1 border-t border-current/20 pt-3">
-              <span class="text-xs font-bold uppercase tracking-tighter opacity-80">Suggested Action</span>
+                 class="mt-1 pl-10 border-t border-current/20 pt-3">
               <p class="text-xs font-semibold flex items-center gap-1.5">
                 <svg class="w-3 h-3 opacity-70 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                  <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414l2.543 2.543 6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
                 {{ suggestedAction }}
               </p>
