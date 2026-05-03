@@ -19,7 +19,7 @@
           <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
             <NuxtLink to="/alerts" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" title="Peringatan">
               <BellIcon class="w-3.5 h-3.5" />
-              <span v-if="systemHealthLabel !== 'Sehat'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
+              <span v-if="systemHealthLabel !== 'Healthy'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
             </NuxtLink>
             <NuxtLink to="/logs" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" title="Log">
               <ActivityIcon class="w-3.5 h-3.5" />
@@ -341,9 +341,9 @@ const timeAgoText = computed(() => {
 
 const systemHealthLabel = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'Kritis'
-  if (s === 'warning') return 'Peringatan'
-  return 'Sehat'
+  if (s === 'danger') return 'Danger'
+  if (s === 'warning') return 'Warning'
+  return 'Healthy'
 })
 
 function parseStoredDate(dateString) {
@@ -367,18 +367,18 @@ const fishAge = computed(() => {
 const cropLifecycle = computed(() => {
   const a = cropAge.value
   if (a === 0) return 'Belum Diatur'
-  if (a < 7) return 'Bibit'
+  if (a < 7) return 'Seedling'
   if (a < 21) return 'Vegetatif'
   if (a < 30) return 'Pematangan'
-  return 'Mendekati Panen'
+  return 'Near Harvest'
 })
 
 const fishLifecycle = computed(() => {
   const a = fishAge.value
   if (a === 0) return 'Belum Diatur'
   if (a < 14) return 'Larva'
-  if (a < 30) return 'Benih Ikan'
-  if (a < 60) return 'Pertumbuhan'
+  if (a < 30) return 'Fingerling'
+  if (a < 60) return 'Grow-out'
   return 'Siap Panen'
 })
 
@@ -398,8 +398,8 @@ const alertIconBgClass = computed(() => {
 
 const alertTitle = computed(() => {
   const s = latest.value?.overall_status
-  if (s === 'danger') return 'Peringatan Kritis'
-  if (s === 'warning') return 'Peringatan Sistem'
+  if (s === 'danger') return 'Critical Alert'
+  if (s === 'warning') return 'System Warning'
   return 'Sistem Sehat'
 })
 
@@ -485,17 +485,17 @@ const overallDotClass = computed(() => {
 
 // Methods
 function statusLabel(status) {
-  if (!status) return 'Kosong'
+  if (!status) return '—'
   if (status === 'normal') return 'Normal'
-  if (status === 'warning') return 'Waspada'
-  if (status === 'danger') return 'Kritis'
+  if (status === 'warning') return 'Warning'
+  if (status === 'danger') return 'Danger'
   return String(status)
 }
 
 function eventTypeLabel(type) {
-  if (type === 'danger') return 'Kritis'
-  if (type === 'warning') return 'Peringatan'
-  if (type === 'recovery') return 'Pulih'
+  if (type === 'danger') return 'Danger'
+  if (type === 'warning') return 'Warning'
+  if (type === 'recovery') return 'Recovery'
   return 'Normal'
 }
 

@@ -9,7 +9,7 @@
           <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Peringatan Aktif</h1>
+          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Active Alerts</h1>
         </div>
         <div class="flex items-center gap-3">
           <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
@@ -28,7 +28,7 @@
         </div>
 
         <div v-else-if="error && !latest" class="bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/50 rounded-md p-8 shadow-sm flex flex-col items-center justify-center text-center transition-colors duration-300">
-          <h2 class="text-xs md:text-sm font-medium text-red-700 dark:text-red-300 mb-1">Peringatan Tidak Tersedia</h2>
+          <h2 class="text-xs md:text-sm font-medium text-red-700 dark:text-red-300 mb-1">Alerts Unavailable</h2>
           <p class="text-xs text-red-600 dark:text-red-400">Pembacaan sensor terbaru tidak dapat dimuat.</p>
         </div>
 
@@ -97,7 +97,7 @@ const activeAlerts = computed(() => {
   if (l.ph_status !== 'normal') {
     alerts.push({
       id: 'ph',
-      title: 'pH Level ' + (l.ph_status === 'danger' ? 'Kritis' : 'Peringatan'),
+      title: 'pH Level — ' + (l.ph_status === 'danger' ? 'Danger' : 'Warning'),
       severity: l.ph_status,
       currentValue: `${l.ph} pH`,
       diagnosis: l.ph > 7.5 ? 'pH sistem terlalu basa. Hal ini dapat menyebabkan nutrient lockout dan kekurangan nutrisi tanaman.' : 'pH asam terdeteksi. Keasaman tinggi dapat membuat ikan stres dan merusak koloni bakteri.',
@@ -109,7 +109,7 @@ const activeAlerts = computed(() => {
   if (l.tds_status !== 'normal') {
     alerts.push({
       id: 'tds',
-      title: 'Nutrisi (TDS) ' + (l.tds_status === 'danger' ? 'Kritis' : 'Peringatan'),
+      title: 'Nutrisi (TDS) — ' + (l.tds_status === 'danger' ? 'Danger' : 'Warning'),
       severity: l.tds_status,
       currentValue: `${l.tds} ppm`,
       diagnosis: l.tds > 1000 ? 'Konsentrasi nutrisi terlalu tinggi. Risiko pembakaran akar dan penumpukan racun.' : 'Kadar nutrisi tidak mencukupi untuk siklus pertumbuhan tanaman yang optimal.',
@@ -121,7 +121,7 @@ const activeAlerts = computed(() => {
   if (l.turbidity_status !== 'normal') {
     alerts.push({
       id: 'turbidity',
-      title: 'Kejernihan Air ' + (l.turbidity_status === 'danger' ? 'Kritis' : 'Peringatan'),
+      title: 'Kejernihan Air — ' + (l.turbidity_status === 'danger' ? 'Danger' : 'Warning'),
       severity: l.turbidity_status,
       currentValue: `${l.turbidity} NTU`,
       diagnosis: 'Kejernihan air buruk. Padatan tersuspensi dapat menyumbat pompa sistem atau menandakan limbah berlebih.',
@@ -133,7 +133,7 @@ const activeAlerts = computed(() => {
   if (l.water_level_status !== 'normal') {
     alerts.push({
       id: 'water',
-      title: 'Volume Air ' + (l.water_level_status === 'danger' ? 'Kritis' : 'Peringatan'),
+      title: 'Volume Air — ' + (l.water_level_status === 'danger' ? 'Danger' : 'Warning'),
       severity: l.water_level_status,
       currentValue: `${l.water_level}%`,
       diagnosis: 'Volume air sangat rendah. Pompa celup berisiko berjalan kering.',

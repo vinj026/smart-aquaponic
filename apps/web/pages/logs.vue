@@ -10,7 +10,7 @@
           <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Log Kejadian</h1>
+          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Event Log</h1>
         </div>
         <div class="flex items-center gap-3">
           <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
@@ -112,9 +112,9 @@ function timeAgo(dateString) {
 }
 
 function eventTypeLabel(type) {
-  if (type === 'danger') return 'Kritis'
-  if (type === 'warning') return 'Peringatan'
-  if (type === 'recovery') return 'Pulih'
+  if (type === 'danger') return 'Danger'
+  if (type === 'warning') return 'Warning'
+  if (type === 'recovery') return 'Recovery'
   return 'Normal'
 }
 
