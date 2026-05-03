@@ -10,10 +10,10 @@
           <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Event Logs</h1>
+          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Log Kejadian</h1>
         </div>
         <div class="flex items-center gap-3">
-          <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Switch to Mobile View' : 'Switch to Desktop View'">
+          <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
             <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
           </button>
           <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
@@ -25,20 +25,20 @@
       <!-- Logs Card -->
       <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
         <div class="space-y-1">
-          <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">System Logs</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Chronological history of all system events.</p>
+          <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Log Sistem</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Riwayat kronologis semua kejadian sistem.</p>
         </div>
 
         <div v-if="loading && events.length === 0" class="text-xs text-gray-500 dark:text-gray-400 text-center py-8">
-          Loading logs...
+          Memuat log...
         </div>
 
         <div v-else-if="error && events.length === 0" class="text-xs text-red-600 dark:text-red-400 text-center py-8">
-          Failed to load logs.
+          Gagal memuat log.
         </div>
 
         <div v-else-if="events.length === 0" class="text-xs text-gray-500 dark:text-gray-400 text-center py-8">
-          No logs recorded yet.
+          Belum ada log tercatat.
         </div>
         
         <div v-else class="space-y-4">
@@ -46,12 +46,12 @@
             <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full border border-white dark:border-slate-900" :class="dotColorClass(evt.type)"></div>
             <div class="flex flex-wrap items-baseline justify-between gap-x-2">
               <span class="text-[10px] font-bold tracking-widest uppercase" :class="titleColorClass(evt.type)">
-                {{ evt.metric }} {{ evt.type }}
+                {{ evt.metric }} {{ eventTypeLabel(evt.type) }}
               </span>
               <span class="text-[10px] text-gray-500 dark:text-gray-400 font-mono" :title="new Date(evt.timestamp).toLocaleString()">{{ timeAgo(evt.timestamp) }}</span>
             </div>
-            <div class="text-xs font-mono text-gray-800 dark:text-gray-200 mt-1">Value: {{ evt.value }}</div>
-            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{{ evt.message }}</p>
+            <div class="text-xs font-mono text-gray-800 dark:text-gray-200 mt-1">Nilai: {{ evt.value }}</div>
+            <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{{ translateEventMessage(evt.message) }}</p>
           </div>
         </div>
       </section>
@@ -104,10 +104,30 @@ onUnmounted(() => {
 function timeAgo(dateString) {
   const diff = now.value - new Date(dateString).getTime()
   const minutes = Math.floor(diff / 60000)
-  if (minutes < 1) return 'Just now'
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 1) return 'Baru saja'
+  if (minutes < 60) return `${minutes} menit lalu`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  return `${Math.floor(hours / 24)}d ago`
+  if (hours < 24) return `${hours} jam lalu`
+  return `${Math.floor(hours / 24)} hari lalu`
+}
+
+function eventTypeLabel(type) {
+  if (type === 'danger') return 'Kritis'
+  if (type === 'warning') return 'Peringatan'
+  if (type === 'recovery') return 'Pulih'
+  return 'Normal'
+}
+
+function translateEventMessage(message) {
+  if (!message) return ''
+  return message
+    .replace(/entered danger zone/gi, 'memasuki zona bahaya')
+    .replace(/entered warning zone/gi, 'memasuki zona peringatan')
+    .replace(/returned to normal/gi, 'kembali ke normal')
+    .replace(/recovered to normal/gi, 'pulih ke normal')
+    .replace(/is critically/gi, 'sangat kritis')
+    .replace(/Immediate action required/gi, 'Tindakan segera diperlukan')
+    .replace(/Monitor closely/gi, 'Pantau dengan ketat')
+    .replace(/No action needed/gi, 'Tidak perlu tindakan')
 }
 </script>
