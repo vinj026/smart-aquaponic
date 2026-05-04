@@ -7,8 +7,7 @@
     @click="toggleColorMode"
   >
     <svg
-      v-if="isDarkMode"
-      class="pointer-events-none h-3.5 w-3.5"
+      class="pointer-events-none hidden h-3.5 w-3.5 dark:block"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -28,8 +27,7 @@
       <path d="m19.07 4.93-1.41 1.41" />
     </svg>
     <svg
-      v-else
-      class="pointer-events-none h-3.5 w-3.5"
+      class="pointer-events-none h-3.5 w-3.5 dark:hidden"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
