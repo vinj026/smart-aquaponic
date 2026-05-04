@@ -15,10 +15,7 @@
           <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
             <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
           </button>
-          <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'" aria-label="Toggle theme">
-            <SunIcon v-if="isDarkMode" class="w-3.5 h-3.5" />
-            <MoonIcon v-else class="w-3.5 h-3.5" />
-          </button>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -77,15 +74,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useLatestReading } from '~/composables/useSupabaseData'
-import { ChevronLeft as ChevronLeftIcon, Sun as SunIcon, Moon as MoonIcon, AlertTriangle as AlertTriangleIcon, AlertCircle as AlertCircleIcon, CheckCircle as CheckCircleIcon, PenTool as ToolIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
-import { useColorMode } from '#imports'
+import { ChevronLeft as ChevronLeftIcon, AlertTriangle as AlertTriangleIcon, AlertCircle as AlertCircleIcon, CheckCircle as CheckCircleIcon, PenTool as ToolIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
 
-const colorMode = useColorMode()
 const { isDesktopLayout, toggleLayoutMode } = useLayoutMode()
-const isDarkMode = computed(() => colorMode.value === 'dark')
-function toggleColorMode() {
-  colorMode.preference = isDarkMode.value ? 'light' : 'dark'
-}
 
 const { reading, loading, error } = useLatestReading()
 const latest = computed(() => reading.value)

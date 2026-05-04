@@ -38,10 +38,7 @@
             <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
               <component :is="isDesktopLayout ? SmartphoneIcon : MonitorIcon" class="w-3.5 h-3.5" />
             </button>
-            <button @click="toggleColorMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDarkMode ? 'Beralih ke mode terang' : 'Beralih ke mode gelap'" aria-label="Toggle theme">
-              <SunIcon v-if="isDarkMode" class="w-3.5 h-3.5" />
-              <MoonIcon v-else class="w-3.5 h-3.5" />
-            </button>
+            <ThemeToggle />
           </div>
         </div>
       </header>
@@ -280,17 +277,11 @@
 </template>
 
 <script setup>
-import { Sun as SunIcon, Moon as MoonIcon, Download as DownloadIcon, Settings as SettingsIcon, Activity as ActivityIcon, Bell as BellIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
+import { Download as DownloadIcon, Settings as SettingsIcon, Activity as ActivityIcon, Bell as BellIcon, Monitor as MonitorIcon, Smartphone as SmartphoneIcon } from 'lucide-vue-next'
 import { useLatestReading, useReadingHistory, useSystemEvents, useLifecycleConfig } from '~/composables/useSupabaseData'
 import CompactSensorRow from '~/components/CompactSensorRow.vue'
 import MinimalChart from '~/components/MinimalChart.vue'
 import { format } from 'date-fns'
-
-const colorMode = useColorMode()
-const isDarkMode = computed(() => colorMode.value === 'dark')
-function toggleColorMode() {
-  colorMode.preference = isDarkMode.value ? 'light' : 'dark'
-}
 
 // State & Data
 const { isDesktopLayout, toggleLayoutMode } = useLayoutMode()
