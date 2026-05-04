@@ -322,7 +322,7 @@ let timer = null
 onMounted(() => {
   timer = setInterval(() => {
     now.value = Date.now()
-  }, 5000)
+  }, 1000)
 })
 onUnmounted(() => {
   if (timer) clearInterval(timer)
@@ -368,18 +368,18 @@ const cropLifecycle = computed(() => {
   const a = cropAge.value
   if (a === 0) return 'Belum Diatur'
   if (a < 7) return 'Seedling'
-  if (a < 21) return 'Vegetatif'
-  if (a < 30) return 'Pematangan'
+  if (a < 21) return 'Vegetative'
+  if (a < 30) return 'Maturing'
   return 'Near Harvest'
 })
 
 const fishLifecycle = computed(() => {
   const a = fishAge.value
   if (a === 0) return 'Belum Diatur'
-  if (a < 14) return 'Larva'
+  if (a < 14) return 'Larval'
   if (a < 30) return 'Fingerling'
   if (a < 60) return 'Grow-out'
-  return 'Siap Panen'
+  return 'Harvest Ready'
 })
 
 const alertClasses = computed(() => {
@@ -442,7 +442,16 @@ const insightText = computed(() => {
   if (l.turbidity_status !== 'normal') return `Kekeruhan air naik ke ${formatSensorValue(l.turbidity, 1)} NTU - di atas batas aman (5 NTU). Padatan tersuspensi dapat menyumbat filter dan menandakan limbah berlebih.`
   if (l.water_level_status !== 'normal') return `Volume air turun ke ${formatSensorValue(l.water_level, 0)}% - di bawah batas aman (70%). Sirkulasi sistem bisa terganggu, segera tambahkan air.`
   
-  return 'Semua parameter akuatik berada dalam rentang optimal untuk ekosistem yang seimbang.'
+  if (cropLifecycle.value === 'Near Harvest') {
+    return `Semua sensor aman. Tanaman sudah ${cropAge.value} hari (${cropLifecycle.value}) - mulai siapkan peralatan panen dan jaga kualitas air tetap stabil.`
+  }
+  if (fishLifecycle.value === 'Grow-out') {
+    return `Sistem stabil. Ikan sedang di fase pertumbuhan aktif (${fishAge.value} hari, ${fishLifecycle.value}), jaga nutrisi tetap konsisten.`
+  }
+  if (cropAge.value > 0 || fishAge.value > 0) {
+    return `Semua parameter optimal. Tanaman berada di fase ${cropLifecycle.value} (${cropAge.value} hari) dan ikan di fase ${fishLifecycle.value} (${fishAge.value} hari).`
+  }
+  return 'Semua parameter dalam kondisi optimal.'
 })
 
 const suggestedAction = computed(() => {

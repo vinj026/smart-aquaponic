@@ -9,7 +9,8 @@ export function useLayoutMode() {
   onMounted(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY)
     if (stored === 'desktop') isDesktopLayout.value = true
-    if (stored === 'mobile') isDesktopLayout.value = false
+    else if (stored === 'mobile') isDesktopLayout.value = false
+    else isDesktopLayout.value = window.innerWidth >= 1024
   })
 
   watch(isDesktopLayout, (enabled) => {

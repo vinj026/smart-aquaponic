@@ -52,7 +52,13 @@ Deno.serve(async (req) => {
     const turbidityBias  = tdsDeviation * 0.4;
     const rawTurbidity   = meanRevert(prev.turbidity, IDEAL.turbidity, 0.15) + turbidityBias;
 
-    const isRefilling    = prev.water_level < 70;
+    const waterRecoveryTarget = thresholds.water_level
+      ? Number(thresholds.water_level.min_normal) + 2
+      : 72;
+    const previousWaterStatus = lastReading?.water_level_status;
+    const isRefilling    = prev.water_level < 70
+      || ((previousWaterStatus === "warning" || previousWaterStatus === "danger")
+        && prev.water_level < waterRecoveryTarget);
     const waterDelta     = isRefilling
       ? Math.random() * 3
       : -Math.random() * 0.3;
@@ -75,10 +81,34 @@ Deno.serve(async (req) => {
       return "normal";
     };
 
+    const getWaterLevelStatus = (val: number, previousStatus?: string) => {
+      const t = thresholds.water_level;
+      if (!t) return "normal";
+
+      const minWarning = Number(t.min_warning);
+      const minNormal = Number(t.min_normal);
+      const maxWarning = Number(t.max_warning);
+      const maxNormal = Number(t.max_normal);
+      const recoveryMin = minNormal + 2;
+
+      if (val < minWarning || val > maxWarning) return "danger";
+
+      if (previousStatus === "warning" || previousStatus === "danger") {
+        if (val < recoveryMin || val > maxNormal) return "warning";
+        return "normal";
+      }
+
+      if (val < minNormal || val > maxNormal) return "warning";
+      return "normal";
+    };
+
     const ph_status          = getStatus("ph", raw.ph);
     const tds_status         = getStatus("tds", raw.tds);
     const turbidity_status   = getStatus("turbidity", raw.turbidity);
-    const water_level_status = getStatus("water_level", raw.water_level);
+    const water_level_status = getWaterLevelStatus(
+      raw.water_level,
+      lastReading?.water_level_status
+    );
 
     const statuses = [ph_status, tds_status, turbidity_status, water_level_status];
     const overall_status = statuses.includes("danger")  ? "danger"

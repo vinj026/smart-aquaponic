@@ -4,8 +4,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/tokens.css'],
   colorMode: {
     classSuffix: '',
-    preference: 'light',
-    fallback: 'light'
+    preference: 'system',
+    fallback: 'dark'
   },
 
   app: {
