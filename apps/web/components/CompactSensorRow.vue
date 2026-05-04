@@ -44,13 +44,13 @@ const props = defineProps({
 const cardClasses = computed(() => {
   if (props.status === 'danger') return 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/50'
   if (props.status === 'warning') return 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/50'
-  return 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700'
+  return 'bg-white dark:bg-neutral-950 border-gray-200 dark:border-neutral-800'
 })
 
 const statusClasses = computed(() => {
   if (props.status === 'danger') return 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-800/50'
   if (props.status === 'warning') return 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50'
   if (props.status === 'normal') return 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50'
-  return 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-slate-700/50'
+  return 'bg-gray-100 dark:bg-neutral-900 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-neutral-800/50'
 })
 </script>

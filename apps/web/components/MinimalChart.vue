@@ -6,7 +6,7 @@
       <!-- Y-Axis Labels (HTML Overlay) -->
       <div class="absolute inset-y-0 left-0 flex flex-col justify-between pointer-events-none z-10 py-2" :style="{ width: `${chartLeft}px` }">
         <span v-for="(label, i) in yAxisLabels" :key="'y'+i" 
-          class="text-[10px] font-mono font-bold text-gray-500 dark:text-slate-400 text-right pr-1.5 leading-none"
+          class="text-[10px] font-mono font-bold text-gray-500 dark:text-neutral-400 text-right pr-1.5 leading-none"
           :style="{ position: 'absolute', top: `${(label.y / 150) * 100}%`, right: '4px', transform: 'translateY(-50%)' }">
           {{ label.text }}
         </span>
@@ -24,7 +24,7 @@
         <!-- Horizontal grid lines -->
         <line v-for="(label, i) in yAxisLabels" :key="'yg'+i"
           :x1="chartLeft" :y1="label.y" :x2="width" :y2="label.y"
-          stroke="currentColor" class="text-gray-100 dark:text-slate-800/50" stroke-width="1" stroke-dasharray="1 4"
+          stroke="currentColor" class="text-gray-100 dark:text-neutral-800/50" stroke-width="1" stroke-dasharray="1 4"
           vector-effect="non-scaling-stroke"
         />
 
@@ -36,14 +36,14 @@
 
         <!-- Hover Crosshair -->
         <g v-if="hoverIndex !== null && hoverPoint" class="pointer-events-none">
-          <line :x1="hoverPoint.x" y1="0" :x2="hoverPoint.x" y2="135" stroke="currentColor" class="text-gray-200 dark:text-slate-700/80" stroke-width="1" stroke-dasharray="2 3" vector-effect="non-scaling-stroke" />
+          <line :x1="hoverPoint.x" y1="0" :x2="hoverPoint.x" y2="135" stroke="currentColor" class="text-gray-200 dark:text-neutral-700/80" stroke-width="1" stroke-dasharray="2 3" vector-effect="non-scaling-stroke" />
         </g>
       </svg>
 
       <!-- X-Axis Labels (HTML Overlay) -->
       <div class="absolute bottom-0 left-0 right-0 h-4 pointer-events-none z-10" :style="{ left: `${chartLeft}px` }">
         <span v-for="(tl, i) in xAxisLabels" :key="'x'+i"
-          class="absolute text-[10px] font-mono font-bold text-gray-500 dark:text-slate-400 bottom-0"
+          class="absolute text-[10px] font-mono font-bold text-gray-500 dark:text-neutral-400 bottom-0"
           :style="{ left: `${((tl.x - chartLeft) / (width - chartLeft)) * 100}%`, transform: tl.anchor === 'middle' ? 'translateX(-50%)' : tl.anchor === 'end' ? 'translateX(-100%)' : 'none' }">
           {{ tl.text }}
         </span>
@@ -61,12 +61,12 @@
       <div v-if="hoverIndex !== null && hoverPoint"
            class="absolute pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-40"
            :style="{ left: `${((hoverPoint.x - chartLeft) / (width - chartLeft)) * (100 - (chartLeft/width*100)) + (chartLeft/width*100)}%`, top: `${(hoverPoint.y / 150) * 100}%` }">
-        <div class="w-2 h-2 bg-gray-800 dark:bg-white rounded-full shadow-sm ring-[2.5px] ring-white dark:ring-slate-900"></div>
+        <div class="w-2 h-2 bg-gray-800 dark:bg-white rounded-full shadow-sm ring-[2.5px] ring-white dark:ring-black"></div>
       </div>
 
       <!-- Minimalist Tooltip -->
       <div v-if="hoverIndex !== null && hoverPoint"
-           class="absolute pointer-events-none transform -translate-x-1/2 -translate-y-[calc(100%+8px)] bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-slate-700 shadow-sm rounded px-2 py-1 z-50 flex flex-col items-center min-w-max"
+           class="absolute pointer-events-none transform -translate-x-1/2 -translate-y-[calc(100%+8px)] bg-white dark:bg-neutral-900 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-neutral-800 shadow-sm rounded px-2 py-1 z-50 flex flex-col items-center min-w-max"
            :style="{ left: `${((hoverPoint.x - chartLeft) / (width - chartLeft)) * (100 - (chartLeft/width*100)) + (chartLeft/width*100)}%`, top: `${(hoverPoint.y / 150) * 100}%` }">
         <span class="text-xs font-bold tracking-tight">{{ hoverValueFormatted }}<span class="text-[10px] font-medium opacity-50 ml-0.5">{{ unit }}</span></span>
         <span class="text-[10px] font-medium opacity-50">{{ hoverTimeFormatted }}</span>

@@ -5,12 +5,12 @@
 
     <div class="mx-auto relative z-10 px-4 py-8 space-y-6 transition-all duration-500" :class="isDesktopLayout ? 'max-w-4xl' : 'max-w-md'">
       <!-- Header -->
-      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
+      <header class="flex items-center justify-between bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
           <NuxtLink to="/" class="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
             <ChevronLeftIcon class="w-5 h-5" />
           </NuxtLink>
-          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3">Event Log</h1>
+          <h1 class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-neutral-800 pl-3">Event Log</h1>
         </div>
         <div class="flex items-center gap-3">
           <button @click="toggleLayoutMode" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1" :title="isDesktopLayout ? 'Beralih ke tampilan seluler' : 'Beralih ke tampilan desktop'">
@@ -23,7 +23,7 @@
       </header>
 
       <!-- Logs Card -->
-      <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
+      <section class="bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md p-6 space-y-6 shadow-sm transition-colors duration-300">
         <div class="space-y-1">
           <h2 class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100">Log Sistem</h2>
           <p class="text-xs text-gray-500 dark:text-gray-400">Riwayat kronologis semua kejadian sistem.</p>
@@ -43,7 +43,7 @@
         
         <div v-else class="space-y-4">
           <div v-for="evt in events" :key="evt.id" class="flex flex-col gap-1 border-l-2 pl-3 pb-1 relative" :class="borderColorClass(evt.type)">
-            <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full border border-white dark:border-slate-900" :class="dotColorClass(evt.type)"></div>
+            <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full border border-white dark:border-black" :class="dotColorClass(evt.type)"></div>
             <div class="flex flex-wrap items-baseline justify-between gap-x-2">
               <span class="text-[10px] font-bold tracking-widest uppercase" :class="titleColorClass(evt.type)">
                 {{ evt.metric }} {{ eventTypeLabel(evt.type) }}

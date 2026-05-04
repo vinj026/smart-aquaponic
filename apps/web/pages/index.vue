@@ -6,17 +6,17 @@
     <div class="mx-auto relative z-10 px-4 py-8 space-y-6 transition-all duration-500" :class="isDesktopLayout ? 'max-w-4xl' : 'max-w-md'">
       
       <!-- Compact Header -->
-      <header class="flex items-center justify-between bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
+      <header class="flex items-center justify-between bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 px-3 py-2 rounded-md shadow-sm transition-colors duration-300">
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-full">
+          <div class="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800 rounded-full">
             <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
             <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ systemHealthLabel }}</span>
           </div>
-          <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3 tracking-[0.2em]">Dashboard</h1>
+          <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-neutral-800 pl-3 tracking-[0.2em]">Dashboard</h1>
         </div>
         <div class="flex items-center gap-3">
           <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:block">Diperbarui {{ timeAgoText }}</div>
-          <div class="flex items-center gap-1 border-l border-gray-100 dark:border-slate-700 pl-2 ml-1">
+          <div class="flex items-center gap-1 border-l border-gray-100 dark:border-neutral-800 pl-2 ml-1">
             <NuxtLink to="/alerts" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 relative" title="Peringatan">
               <BellIcon class="w-3.5 h-3.5" />
               <span v-if="systemHealthLabel !== 'Healthy'" class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></span>
@@ -77,7 +77,7 @@
             
             <!-- Suggested Action (Only for non-normal) -->
             <div v-if="latest.overall_status !== 'normal'" 
-                 class="ml-10 rounded-md border border-gray-200/60 dark:border-slate-700/40 bg-white/80 dark:bg-slate-800/60 px-3 py-2">
+                 class="ml-10 rounded-md border border-gray-200/60 dark:border-neutral-800/40 bg-white/80 dark:bg-neutral-900/60 px-3 py-2">
               <p class="text-xs font-medium flex items-center gap-2 text-gray-600 dark:text-gray-300">
                 <svg class="w-3 h-3 opacity-80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414l2.543 2.543 6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -86,20 +86,20 @@
               </p>
             </div>
           </div>
-          <div v-else-if="latestError" class="px-4 py-4 rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 flex flex-col gap-2 shadow-sm min-h-[100px]">
+          <div v-else-if="latestError" class="px-4 py-4 rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-neutral-950 flex flex-col gap-2 shadow-sm min-h-[100px]">
             <h2 class="text-xs md:text-sm font-medium uppercase tracking-widest text-red-600 dark:text-red-400">Data Aktif Tidak Tersedia</h2>
             <p class="text-xs leading-relaxed text-red-700 dark:text-red-300">
               Pembacaan sensor terbaru tidak dapat dimuat. Sinkronisasi akan mencoba ulang otomatis saat koneksi pulih.
             </p>
           </div>
           <!-- Skeleton Loader -->
-          <div v-else class="px-4 py-4 rounded-md border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col gap-3 shadow-sm animate-pulse min-h-[100px]">
+          <div v-else class="px-4 py-4 rounded-md border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 flex flex-col gap-3 shadow-sm animate-pulse min-h-[100px]">
             <div class="flex items-start gap-3">
-              <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-slate-800 shrink-0"></div>
+              <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-neutral-900 shrink-0"></div>
               <div class="space-y-2 w-full mt-1">
-                <div class="h-3 w-1/3 bg-gray-200 dark:bg-slate-800 rounded"></div>
-                <div class="h-3 w-full bg-gray-200 dark:bg-slate-800 rounded"></div>
-                <div class="h-3 w-2/3 bg-gray-200 dark:bg-slate-800 rounded"></div>
+                <div class="h-3 w-1/3 bg-gray-200 dark:bg-neutral-900 rounded"></div>
+                <div class="h-3 w-full bg-gray-200 dark:bg-neutral-900 rounded"></div>
+                <div class="h-3 w-2/3 bg-gray-200 dark:bg-neutral-900 rounded"></div>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
         <section class="space-y-4">
           <div class="flex items-center justify-between px-1">
             <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Sensor Aktif</h2>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 rounded uppercase tracking-tighter">Waktu Nyata</span>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 dark:bg-neutral-900 text-gray-600 dark:text-gray-400 rounded uppercase tracking-tighter">Waktu Nyata</span>
           </div>
           <div v-if="latest" class="grid grid-cols-2 gap-3">
             <CompactSensorRow 
@@ -129,17 +129,17 @@
               :status="latest?.water_level_status" :status-text="statusLabel(latest?.water_level_status)"
             />
           </div>
-          <div v-else-if="latestError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 p-4 text-xs text-red-700 dark:text-red-300 shadow-sm">
+          <div v-else-if="latestError" class="rounded-md border border-red-200 dark:border-red-900/50 bg-white dark:bg-neutral-950 p-4 text-xs text-red-700 dark:text-red-300 shadow-sm">
             Kartu sensor tidak tersedia karena pembacaan terbaru gagal dimuat.
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
-            <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md animate-pulse"></div>
+            <div v-for="i in 4" :key="i" class="h-16 bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md animate-pulse"></div>
           </div>
         </section>
 
         <!-- Lifecycle (Mobile Only - between sensors and chart) -->
         <section v-if="!isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="Detail siklus hidup sistem">
-          <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="px-2.5 py-1.5 bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
                <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Tanaman</span>
                <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
@@ -149,7 +149,7 @@
                <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
-          <div class="px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="px-2.5 py-1.5 bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex items-center justify-between gap-1">
                <span class="text-[10px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Ikan</span>
                <span class="text-[10px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
@@ -162,7 +162,7 @@
         </section>
 
         <!-- Historical Trends Section -->
-        <section class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
+        <section class="bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md p-4 space-y-4 shadow-sm transition-colors duration-300">
           <div class="flex items-center justify-between">
             <div class="space-y-1">
               <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Tren Historis</h2>
@@ -171,7 +171,7 @@
                 <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400">Sinkronisasi aktif</span>
               </div>
             </div>
-            <div class="flex items-center gap-1.5 bg-gray-50 dark:bg-slate-800/50 px-2 py-1 rounded border border-gray-100 dark:border-slate-700/50">
+            <div class="flex items-center gap-1.5 bg-gray-50 dark:bg-neutral-900/50 px-2 py-1 rounded border border-gray-100 dark:border-neutral-800/50">
               <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tighter">Tren:</span>
               <span class="text-[10px] font-bold uppercase tracking-tight flex items-center gap-1" :class="trendColor">
                 <svg v-if="trendDirection === 'up'" class="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor">
@@ -185,19 +185,19 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center justify-between gap-2 border-t border-gray-50 dark:border-slate-800/50 pt-3">
-            <div class="flex bg-gray-100 dark:bg-slate-800 p-0.5 rounded-md border border-gray-200 dark:border-slate-700">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-t border-gray-50 dark:border-neutral-800/50 pt-3">
+            <div class="flex bg-gray-100 dark:bg-neutral-900 p-0.5 rounded-md border border-gray-200 dark:border-neutral-800">
               <button v-for="tr in timeRanges" :key="tr.value"
                 @click="selectedTime = tr.value"
                 class="text-[10px] px-2.5 py-1 font-bold rounded-md tracking-wider transition-all"
-                :class="selectedTime === tr.value ? 'bg-white dark:bg-slate-600 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'"
+                :class="selectedTime === tr.value ? 'bg-white dark:bg-neutral-700 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700'"
               >{{ tr.label }}</button>
             </div>
-            <div class="flex bg-gray-100 dark:bg-slate-800 p-0.5 rounded-md border border-gray-200 dark:border-slate-700">
+            <div class="flex bg-gray-100 dark:bg-neutral-900 p-0.5 rounded-md border border-gray-200 dark:border-neutral-800">
               <button v-for="opt in options" :key="opt.value"
                 @click="selected = opt.value"
                 class="text-[10px] px-2.5 py-1 font-bold rounded-md tracking-wider transition-colors"
-                :class="selected === opt.value ? 'bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                :class="selected === opt.value ? 'bg-white dark:bg-neutral-800 shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
               >{{ opt.label }}</button>
             </div>
           </div>
@@ -222,7 +222,7 @@
 
         <!-- Lifecycle Information Grid (Desktop Only) -->
         <section v-if="isDesktopLayout" class="grid grid-cols-2 gap-3" aria-label="Detail siklus hidup sistem">
-          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex min-w-0 items-center justify-between gap-1">
                <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Tanaman</span>
                <span class="min-w-0 truncate text-[8px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ cropLifecycle }}</span>
@@ -232,7 +232,7 @@
                <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Hari</span>
              </div>
           </div>
-          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
+          <div class="min-w-0 px-2.5 py-1.5 bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md shadow-sm flex flex-col justify-center gap-0.5 transition-colors duration-300">
              <div class="flex min-w-0 items-center justify-between gap-1">
                <span class="shrink-0 text-[9px] uppercase text-gray-600 dark:text-gray-400 font-medium tracking-wide leading-none whitespace-nowrap">Umur Ikan</span>
                <span class="min-w-0 truncate text-[8px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-0.5 py-0.5 rounded-sm leading-none whitespace-nowrap">{{ fishLifecycle }}</span>
@@ -250,7 +250,7 @@
             <h2 class="text-[11px] md:text-xs font-medium uppercase tracking-widest text-gray-600 dark:text-gray-400">Aktivitas Terkini</h2>
             <NuxtLink to="/logs" class="text-[10px] font-bold text-emerald-500 hover:underline">Lihat semua</NuxtLink>
           </div>
-          <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
+          <div class="bg-white dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-md overflow-hidden shadow-sm transition-colors duration-300">
             <div v-if="eventsLoading && events.length === 0" class="p-8 text-center">
               <p class="text-xs text-gray-500 dark:text-gray-400 italic">Memuat aktivitas terbaru...</p>
             </div>
@@ -260,8 +260,8 @@
             <div v-else-if="events.length === 0" class="p-8 text-center">
               <p class="text-xs text-gray-500 dark:text-gray-400 italic">Belum ada aktivitas tercatat</p>
             </div>
-            <div v-else class="divide-y divide-gray-50 dark:divide-slate-800">
-              <div v-for="event in events" :key="event.id" class="px-4 py-3 space-y-1.5 group hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
+            <div v-else class="divide-y divide-gray-50 dark:divide-neutral-800">
+              <div v-for="event in events" :key="event.id" class="px-4 py-3 space-y-1.5 group hover:bg-gray-50 dark:hover:bg-neutral-900/60 transition-colors cursor-default">
                 <div class="flex items-center justify-between">
                   <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded tracking-wider" :class="getEventTagClass(event.type)">{{ eventTypeLabel(event.type) }}</span>
                   <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 group-hover:text-gray-600">{{ formatEventTime(event.timestamp) }}</span>

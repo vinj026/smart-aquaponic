@@ -77,8 +77,8 @@
 
 .dark {
   --color-canvas: #000000;
-  --color-canvas-secondary: #0f172a;
-  --color-canvas-grouped: #1e293b;
+  --color-canvas-secondary: #0a0a0a;
+  --color-canvas-grouped: #171717;
 
   --color-ink: #f1f5f9;
   --color-ink-secondary: #9ca3af;
@@ -94,9 +94,9 @@
   --color-success: #34d399;
   --color-success-bg: rgba(6, 78, 59, 0.3);
 
-  --color-border: #334155;
-  --color-separator: #334155;
-  --color-separator-opaque: #475569;
+  --color-border: #262626;
+  --color-separator: #262626;
+  --color-separator-opaque: #404040;
 
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2);
   --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.3);
