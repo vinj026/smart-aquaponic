@@ -8,16 +8,6 @@ Real-time monitoring dashboard untuk sistem aquaponic. Menampilkan data sensor (
 - **Database**: Supabase (PostgreSQL + Realtime)
 - **Edge Functions**: Supabase Edge Functions (Deno)
 
-## Project Structure
-
-```
-apps/
-  web/        # Nuxt frontend dashboard
-supabase/
-  functions/  # Edge functions (Simulation & Logic)
-  migrations/ # Database migrations
-docs/         # PRD, architecture, testing docs
-```
 
 ## Setup
 
