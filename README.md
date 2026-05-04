@@ -5,7 +5,6 @@ Real-time monitoring dashboard untuk sistem aquaponic. Menampilkan data sensor (
 ## Tech Stack
 
 - **Frontend**: Nuxt 4, Vue 3, Tailwind CSS
-- **Backend**: Node.js, Express
 - **Database**: Supabase (PostgreSQL + Realtime)
 - **Edge Functions**: Supabase Edge Functions (Deno)
 
@@ -14,9 +13,8 @@ Real-time monitoring dashboard untuk sistem aquaponic. Menampilkan data sensor (
 ```
 apps/
   web/        # Nuxt frontend dashboard
-  api/        # Express backend API
 supabase/
-  functions/  # Edge functions
+  functions/  # Edge functions (Simulation & Logic)
   migrations/ # Database migrations
 docs/         # PRD, architecture, testing docs
 ```
@@ -27,12 +25,11 @@ docs/         # PRD, architecture, testing docs
 
 ```bash
 cd apps/web && npm install
-cd apps/api && npm install
 ```
 
 ### Environment variables
 
-Copy `.env.example` ke `.env` di masing-masing folder (`apps/web`, `apps/api`) dan isi dengan kredensial yang sesuai.
+Copy `.env.example` ke `.env` di folder `apps/web` dan isi dengan kredensial Supabase yang sesuai.
 
 ### Run development
 
@@ -42,16 +39,8 @@ cd apps/web
 npm run dev
 ```
 
-Backend:
-```bash
-cd apps/api
-npm run dev
-```
+### Simulation
 
-## Branch Strategy
+Data sensor digenerate secara otomatis melalui Supabase Edge Functions.
 
-- `main` — production
-- `dev` — active development
-- `feat/*` — feature branches
 
-Commit menggunakan [Conventional Commits](https://www.conventionalcommits.org/).
