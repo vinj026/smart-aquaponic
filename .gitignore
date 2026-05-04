@@ -17,6 +17,8 @@ apps/api/*firebase-adminsdk*.json
 dist/
 .nuxt/
 .output/
+.vercel/
+supabase/.temp/
 
 # Firebase
 .firebase/
