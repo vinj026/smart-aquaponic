@@ -1,6 +1,6 @@
 {
-  "name": "Aquaguard IoT Platform",
-  "short_name": "Aquaguard",
+  "name": "Dashboard",
+  "short_name": "Dashboard",
   "description": "Smart Aquaponics Monitoring & Automation Platform",
   "start_url": "/",
   "display": "standalone",

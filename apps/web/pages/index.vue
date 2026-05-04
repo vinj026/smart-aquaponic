@@ -12,7 +12,7 @@
             <div class="w-1.5 h-1.5 rounded-full" :class="overallDotClass"></div>
             <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ systemHealthLabel }}</span>
           </div>
-          <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3 tracking-[0.2em]">Aquaguard IoT</h1>
+          <h1 v-if="isDesktopLayout" class="text-sm md:text-base font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100 border-l border-gray-100 dark:border-slate-700 pl-3 tracking-[0.2em]">Dashboard</h1>
         </div>
         <div class="flex items-center gap-3">
           <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:block">Diperbarui {{ timeAgoText }}</div>
