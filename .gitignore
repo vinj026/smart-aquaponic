@@ -55,3 +55,9 @@ temp/
 .agents/
 skills-lock.json
 brain/
+.vercel
+.continue/
+.qwen/
+audit.md
+issue.md
+**/issue.md
